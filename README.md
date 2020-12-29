@@ -2,6 +2,10 @@
  
 # 알고리즘 그동안 배운 점
 
+![image-20201229174002381](git 기초.assets/image-20201229174002381.png)
+
+
+
 ###  1. 순열 알고리즘
 
 ``` c++
@@ -232,4 +236,92 @@ void ~(index){
 - lower bound는 크거나 같으면서 가장 작은 수
 - upper bound는 크거나 같으면서 가장 작은 수이다.
 - 4의 lower bound는 4,  4의 upper bound는 5이다.
+
+
+
+- 이때 upper bound와 lower bound의 수를 위치를 빼면 같은 수의 개수를 찾을 수 있다.
+
+-  만약 없는 수인 6을 생각해보아도 
+
+    6의 lower bound는 7
+
+    6의 upper boundsms 7, 즉 같은 인덱스이므로 빼면 0이 나온다
+
+
+
+```C++
+auto range = equal_range(second.begin(), second.end(), -num);
+ans += range.second - range.first;
+```
+
+
+
+- 위와 같이 하면 ans에 -num의 개수가 ++된다.
+
+  ##### 단 second는 정렬되어 있어야 한다!
+
+
+
+#### 21. 이중벡터 초기화 => `vector< vector<int> > arr (6, vector<int>(5,0));`
+
+
+
+ #### 22. pair
+
+```C++
+std::vector< std::pair<int, int> > connect;
+connect.push_back(std::make_pair(a,b));
+
+//정렬같은 경우 cmp함수 없이 sort(connect. begin(), connect.end()) 하면 first기준 정렬임(default)
+
+//first 기준 정렬
+bool cmp(connect pair<int,int> &a, const pair<int,int> &b){
+    return a.first< b.first;
+}
+
+//second 기준 정렬
+bool cmp(const pair<int,int> &a, const pair<int,int> &b){
+    return a.second < b.second;
+}
+```
+
+#### 23. dfs, bfs 양식
+
+```c++
+void dfs(int visit){
+    visited[visit]=true;
+    printf("%d", visit);
+    
+    for(int i=1; i< N+1; i++){
+        if(!visited[i]&&connect[visit][i]==true){
+            dfs(i);
+        }
+    }
+    return;
+}
+
+void bfs(int visit){
+    bfs_queue.push(visit);
+    visited[visit]=true;
+    while(!bfs_queue.empty()){
+        int tmp = bfs_queue.front();
+        bfs_queue.pop();
+        printf("%d ",tmp);
+    
+    
+        for(int i=1; i<N+1; i++){
+    	    if(!visited[i]&&connect[tmp][i]==true){
+    	        bfs_queue.push(i);
+    	        visited[i]=true;
+   	     }
+  	  }
+    }
+    
+    return;
+}
+```
+
+
+
+#### 25. bfs는 미리 점검하고 방문했다 함. => 점검하고 큐에 넣은 후 다음 while에 방문하는거 X
 
