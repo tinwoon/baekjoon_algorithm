@@ -1,7 +1,5 @@
-# baekjoon_algorithm
+# [baekjoon_algorithm][https://www.acmicpc.net/]
  
-# 알고리즘 그동안 배운 점
-
 
 ![백준 랭크](https://user-images.githubusercontent.com/18729679/103272373-063c4280-4a00-11eb-9290-a6f271f53766.png)
 
