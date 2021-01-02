@@ -967,3 +967,20 @@ int calculate() {
 #### 67. queue는 iterator기반 탐색을 제공하지 않는다.
 
 - begin(), end() 등을 사용하려면 deque를 써야함.
+
+#### 68. emplace_back은 push_back과 완전히 비슷하지만 성능면에서 우수하다.
+ - 이제까지의 push_back을 emplace_back으로 대체해도 상관 없다.
+
+#### 69. 재귀로 모든 n가지의 경우의 수를 찾는 방법
+ - 예를 들어 주사위 n번이 각각 나오는 수는 6을 n번 곱한 값이다.
+ ```c++
+ void calculate(int num_dice){
+     if(){
+         //기저사례
+     }
+
+     for(int k=0; k<6; k++){
+         value[num_dice]=k;
+         calculate(num_dice+1);
+     }
+ }
