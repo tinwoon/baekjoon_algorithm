@@ -78,6 +78,7 @@ int main() {
 				if (map[i][j] == '*') continue;
 				value_1[i][j] += value_2[i][j] + value_3[i][j];
 				if (map[i][j] == '#') value_1[i][j] -= 2;
+				if (value_1[i][j] == -3) continue;
 				rst = std::min(rst, value_1[i][j]);
 			}
 		}
