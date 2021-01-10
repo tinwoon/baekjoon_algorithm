@@ -984,3 +984,32 @@ int calculate() {
          calculate(num_dice+1);
      }
  }
+
+#### 70. inline 함수는 다음과 같이 함수코드 자체를 변경해준다.
+ ```c++
+ inline int min(int x, int y){
+     return x>y ? y:x;
+ }
+
+ int main(){
+     std::cout<<min(5,6)<<endl;
+ }
+
+ //다음과 같이 변경되게 된다.
+ int main(){
+     std::ctour<<(5>6?6:5)<<endl;
+ }
+
+####71. set자료구조 => key값은 중복이 허용되지 않는다.
+ - 원소가 insert 멤버함수에 의해 삽입되면 원소는 오름차순으로 자동 정렬된다.
+ ```c++
+ std::set<int> ans;
+ t=10
+ while(t){
+     ans.insert(t);
+     t--;
+ }
+
+ - => ans에 {1,2,3,4,5,6,7,8,9,10}
+
+ - 여기에 ans.insert(4)해도 ans는 {1,2,3,4,5,6,7,8,9,10}임
