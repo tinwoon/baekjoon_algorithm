@@ -1029,3 +1029,8 @@ int calculate() {
 
 #### 74. itr을 뒤부터 참조하고 싶으면 `for(auto itr = v.rbegin(); itr != vr.end(); itr++)`하면 됩니다!
 
+
+
+#### 75. 물통문제처럼 돌그룹(12886)문제는
+
+- A,B,C 3개의 돌의 visited를 하기 위해 `visited[A][B][C]`를 해야하지만 마찬가지로 C는 전체 돌의 개수에서 A와B의 개수를 빼면 나오므로 `visited[A][B]`로 setting해도 풀 수 있다.
