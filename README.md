@@ -1037,3 +1037,62 @@ int calculate() {
 
 #### 76. 벽부수기나, 말이 되고 싶은 원숭이 문제처럼 두 개의 조건을 가지는 문제가 있을 때는 `visited[nx][ny]`만 하는게 아닌 `visited[nx][ny][num]`처럼 벽을 몇 개 뿌신 상태로 벽을 넘어갔는지를 저장하는 visited로 실행해야 함
 
+
+
+#### 77. ==BFS 단축 알고리즘!! floodfill과 비슷한 느낌임(백준 3197번 백조의 호수)==
+
+```c
+bool water_check[1500][1500]
+char a[1500][1500]    
+    
+    
+int main(){
+    queue< pair<int,int> > water, next_water;
+    int n,m;
+    scanf("%d %d", &n, &m);
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j+=){
+            scanf(" %1c", &a[i][j]);
+            if(a[i][j] == '.'){
+                water.emplace(make_pair(i,j));
+                water_check[i][j] = true;
+            }
+        }
+    }
+    
+    //map에서 .은 물을 의미함
+    //water에는 물의 좌표를 모두 넣어둠.
+    while(!water.empty()){
+        int x = water.front().first;
+        int y = water.front().second;
+        water.pop();
+        //이걸 해주는 이유는 기존의 .이 아닌 X로 된 얼음의 값을 녹였음을 표현하기 위해 X를 .으로 변경하는 것
+        a[i][j] = '.';
+        
+        for(int k=0; k<4; k++){
+            int nx = x + dx[k];
+            int ny = y + dy[k];
+            if(nx < 0 || nx >= n || ny < 0 || ny >=m) continue;
+            //이미 방문했던 water는 방문하지 않고
+            if(water_check[nx][ny]) continue;
+            //만약 water에 들어가 있지 않다면(즉, X였다가 위의 a[i][j] = '.'에 의해 방금 .으로 바뀌었다면)
+            if(a[nx][ny] == '.'){
+                water.push(make_pair(nx,ny));
+                water_check[nx][ny] = true;
+            //반대로 아직 X인 상태라면 다음번 부터는 .으로 바뀔 얼음이므로 next_water에 넣어준다.
+            //그 다음 water_check에 넣어주면 기존의 bfs의 단점인 처음부터 다시 탐색하는 과정을 단축시켜 시간을 절약할 수 				있다.
+            }else{
+                next_water.push(make_pair(nx,ny));
+                water_check[nx][ny] = true;
+            }
+        }
+    }
+    //next_water에는 다음부터 녹을 얼음의 좌표를 저장해 놓았기 때문에 다음부터 물이 될 자표임으로 water에 넣어주고 초기화
+    water = next_water;
+    next_water = queue< pair<int,int> >();
+    
+}    
+    
+	
+```
+
