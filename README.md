@@ -1096,3 +1096,97 @@ int main(){
 	
 ```
 
+#### 78. `#include <numeric> 하고 iota(v.begin(), v.end(),0);`하면 벡터 v에 0부터 한칸씩 들어간 값이 들어있음.
+
+
+
+#### 79. DP 문제는
+
+> 1. 문제에 보면 변수가 항상 존재하는데 이 변수를 모두 찾아서 점화식의 형태로 넣고
+> 2. 반례가 없다는 확신은 어떤 상황 => 다른 상황에서 나오는 모든 경우를 다 찾았으면 반례가 없다고 확신하기 
+>    - AB문제는 A사용, B사용을 제외하면 문제가 나올 수 있는 방법이 없으니 반례가 없다.
+> 3.  DP로 문제를 푸려면 가장 작은 단위를 찾아서 누적해 찾아가기.
+
+
+
+#### 80. AB 문제 점화식
+
+```c++
+#include <iostream>
+#include <vector>
+#include <string.h>
+
+int N, K;
+bool dp[51][51][1226];
+char rst[51];
+
+//문자열의 길이가 n이고, a의 개수는 a_num인 문자열 중 조건을 만족하는 쌍의 개수가 k개가 일 때
+bool calculate(int n, int a_num, int k) {
+	
+	
+	if (n == N) {
+		if (k == K)	return true;
+		else return false;
+	}
+	if (dp[n][a_num][k]) return false;
+	dp[n][a_num][k] = true;
+
+	//A를 넣을 때
+	rst[n] = 'A';
+	if (calculate(n + 1, a_num + 1, k)) return true;
+
+	//B를 넣을 때
+	rst[n] = 'B';
+	if (calculate(n + 1, a_num, k + a_num)) return true;
+	
+	return false;
+
+}
+
+int main() {
+	scanf("%d %d", &N, &K);
+	if (calculate(0, 0, 0)) std::cout << rst;
+	else printf("-1");
+}
+```
+
+#### 81. a^b를 빠르게 구할 수 있다.(분할 정복으로)
+
+```c++
+int calc(int a, int b){
+    int ans = 1;
+    while(b>0){
+        if(b%2==1){
+            ans *= a;
+        }
+        a = a*a;
+        b/=2;
+    }
+    return ans;
+}
+```
+
+#### 82. nCk = n!/k!*(n-k)! 에서 20C3은 20!/3!*17! 이지만 20!은 2의 31승보다 크기 때문에 int의 값을 넘어간다.
+
+#### 따라서, 파스칼의 삼각형을 통해 n번째 줄에서 k번째 오는 수를 계산하면 된다. 
+
+
+
+#### 83. memset은 byte 단위로 초기화하는데 두번째 인자는 0, -1만 빼고 이상하게 초기화 된다.
+
+> 0, -1은 비트로 하면 00000000... , 11111111... 이기 때문
+>
+> 따라서 `std::fill(&dp[0][0][0], &dp[1001][1001][2] + 1, -1000000);`을 쓰는 것이 좋다.
+
+
+
+#### 84. sort의 compare 함수는 true가 나오면 유지 false가 나오면 변경이다.
+
+```c++
+bool compare(int a, int b){
+    if(a<b) return false;
+    else return true;
+}
+//a<b 이면 안되도록하여 a>=b순으로 정렬되도록 sorting 해준다.
+```
+

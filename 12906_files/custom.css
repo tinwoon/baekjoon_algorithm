@@ -1,0 +1,668 @@
+body,
+input,
+button,
+select,
+textarea,
+h1,h2,h3,h4,h5,h6,
+.h1,.h2,.h3,.h4,.h5,.h6,
+.purchase span {
+    font-family: 'Open Sans', 'Apple SD Gothic Neo', 'Noto Sans CJK KR', 'Noto Sans KR', '나눔바른고딕', '나눔고딕', '맑은고딕', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !important;
+}
+
+.redactor-editor {
+	font-family: 'Open Sans', 'Apple SD Gothic Neo', 'Noto Sans CJK KR', 'Noto Sans KR', '나눔바른고딕', '나눔고딕', '맑은고딕', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !important;
+}
+
+.header .navbar-default .navbar-nav > li > a {
+	font-size: 14px;
+	padding: 9px 20px 9px 15px;
+}
+
+.header .navbar-default .navbar-nav > li > a:lang(en) {
+	font-size: 14px;
+	padding: 9px 8px 9px 7px;
+}
+
+@media (min-width: 992px) {
+	.header-fixed .header.header-fixed-shrink .navbar-nav > li > a {
+		padding: 55px 18px 18px 14px;
+	}
+}
+
+.header .dropdown > a:after {
+	right: 10px;
+}
+.header .dropdown > a:lang(en):after {
+	right: 0px;
+}
+
+@media (min-width: 1200px) {
+	.header .navbar-default .navbar-nav > li > a {
+		font-size: 14px;
+		padding: 9px 25px 9px 25px;
+	}
+	.header .navbar-default .navbar-nav > li > a:lang(en) {
+		font-size: 14px;
+		padding: 9px 15px 9px 15px;
+	}
+
+	.header .dropdown > a:after {
+		right: 10px;
+	}
+	.header .dropdown > a:lang(en):after {
+		right: 3px;
+	}
+
+	.header-fixed .header.header-fixed-shrink .navbar-nav > li > a {
+		padding: 55px 30px 18px 20px;
+	}
+}
+
+.header .topbar ul.loginbar > li a .badge {
+	position: relative;
+	top: -4px;
+	left: 2px;
+	padding: 3px 5px;
+}
+
+.header .topbar ul.loginbar > li a > .badge-important {
+	background-color: #d15b47!important;
+	color: #fff;
+}
+
+.header .navbar-brand {
+  top: -25px;
+  z-index: 10000;
+}
+
+@media (min-width: 992px) {
+  .header .container > .navbar-header {
+    margin-bottom: -30px;
+  }
+}
+@media (max-width: 991px) {
+	.header .navbar-brand {
+		top: 0px;
+	} 
+}
+
+.header .navbar-default .navbar-header .navbar-brand img {
+	/* width: 262px; */
+	height: 60px;
+}
+
+@media (max-width: 450px) { 
+	.header .navbar-default .navbar-header .navbar-brand img {
+		max-width: 320px; 
+		max-height: 60px;
+	}
+}
+
+.nav a > .badge {
+	position: relative;
+	top: -4px;
+	left: 2px;
+	padding: 3px 5px;
+}
+
+.nav a > .badge-important {
+	background-color: #d15b47!important;
+	color: #fff;
+}
+
+
+td.accepted {
+    background-color: #b0f4b0;
+}
+
+td.partially-accepted {
+    background-color: #f4f4b0;
+}
+
+td.wronganswer, td.wrong-answer {
+    background-color: #f4b0b0;
+}
+
+.blog-twitter .blog-twitter-inner a.article-subject {
+	color: #333;
+}
+
+.comment .content {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.modal {
+	z-index: 10000;
+}
+
+.header .topbar ul.loginbar > li > a.username, .header .topbar ul.loginbar > li > a.username:hover {
+	text-transform: none;
+}
+
+
+@media (min-width: 992px) {	
+	.header .navbar .search-open {
+		width: 260px;
+	}
+}
+
+code {
+	color: inherit;
+	background-color: inherit;
+}
+
+code,
+kbd,
+pre,
+samp {
+    font-family: 'Menlo', 'Monaco', 'Consolas', 'Source Code Pro', 'Courier New', monospace;
+
+}
+
+/* This gets Google to fall into place */
+.social {
+	font-size: 1px;
+}
+
+.social service {
+	margin-top: 5px;
+}
+
+/* This gets Facebook to fall into place */
+.social iframe {
+/* 	vertical-align: middle; */
+}
+
+.social .facebook {
+	margin-right: 2px;
+}
+
+
+.social .twitter {
+	margin-right: 2px;
+	margin-left:1px;
+}
+
+/* Set an optional width for your button wrappers */
+.social span {
+	display: inline-block;
+/* 	width: 110px; */
+}
+
+/* Adjust the widths individually if you like */
+.social .google {
+	width: 60px;
+}
+
+.social .kakao .kakao-link-btn img {
+	height: 20px;
+	width: 70px;
+	vertical-align: baseline;
+	margin-left:2px;
+}
+
+.margin-top-5 { margin-top: 5px;}
+
+.social .comments {
+	font-size: 13px;
+}
+
+.social .pinterest {
+  margin-left: 3px;
+}
+
+.copyright a, .copyright .list-unstyled>li{
+  color: #bbb !important;
+}
+
+.headline h2 a, .headline h3 a, .headline h4 a {
+  color: inherit;
+}
+
+.monospace {
+	font-family: 'Menlo', 'Monaco', 'Consolas', 'Source Code Pro', 'Courier New', monospace;
+}
+
+.textarea-monospace {
+	font-family: 'Menlo', 'Monaco', 'Consolas', 'Source Code Pro', 'Courier New', monospace !important;
+}
+
+.sky-form label.input  {
+	margin-bottom: inherit;
+}
+
+.editor-toolbar.fullscreen {
+	z-index: 9999 !important;
+}
+.background-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(230,126,34,0.3);
+    z-index: -1;
+}
+
+li a.highlight {
+	color: #0076C0 !important;
+}
+
+.sponsor-image {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.footer .list-inline {
+	margin-left: 0px;
+}
+
+.footer .list-inline>li {
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+.copyright img.startlink-logo {
+	margin-top: 10px;
+	max-height: 110px;
+}
+
+.header .topbar ul.loginbar li.topbar-devider {
+	margin: 0 9px 0 9px !important;
+}
+
+.margin-left-3 {
+	margin-left: 3px;
+}
+
+.ms-text::after {
+	content: " ms";
+	color: #e74c3c !important;
+}
+
+.gb-text::after {
+	content: " GB";
+	color: #e74c3c !important;
+}
+
+.mb-text::after {
+	content: " MB";
+	color: #e74c3c !important;
+}
+
+.kb-text::after {
+	content: " KB";
+	color: #e74c3c !important;
+}
+
+.b-text::after {
+	content: " B";
+	color: #e74c3c !important;
+}
+
+.space-highlight {
+	background-color: rgba(250,218,94,0.3);
+}
+
+blockquote span.glyphicon {
+	font-size: inherit !important;
+	margin: inherit !important;
+}
+.lead {
+	font-weight: inherit !important;
+}
+.profile .profile-bio h2 {
+	font-weight: inherit !important;
+}
+.text-strikethrough {
+	text-decoration: line-through;
+}
+a.color-red:focus, a.color-red:hover, a.color-red:active { color: #e74c3c;}
+div.help {
+	font-size: medium;
+}
+div.help li a {
+	color: #0076C0 !important;
+}
+span.problem-label + span.problem-label {
+	margin-left: 3px;
+}
+.blue-background {
+	background-color: #C8EBFB;
+}
+#show_languages div.list-group-item:first-child:after{
+	content: " (기본 언어)"
+}
+.solvedac-tier {
+	line-height: inherit;
+	width: 0.936em;
+	height: 1.2em;
+	vertical-align: middle;
+}
+.rotate-180 {
+	transform: rotate(180deg);
+}
+.padding-top-0 {
+	padding-top: 0 !important;
+}
+.padding-bottom-0 {
+	padding-bottom: 0 !important;
+}
+.sky-form .no-border-top {
+	border-top: 0 !important;
+}
+.sky-form .border-left {
+	border-left: 1px solid rgba(0,0,0,.1);
+}
+@media (max-width:767px){
+	.sky-form .border-left {
+		border-left: 0;
+	}
+}
+span.problem-label {
+	display: inline;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	font-size: 11px;
+	font-weight: 400;
+	padding: 4px 7px;
+}
+.sky-form span.problem-label {
+	font-size: 13px;
+}
+
+.problem-text {
+	font-size: medium;
+	line-height: 30px;
+}
+.problem-text blockquote, .problem-text blockquote p {
+	font-size: medium;
+}
+
+.page-header .language-restrict {
+	cursor: pointer;
+}
+
+table.table-center-10 {
+	width: 10%; margin-left: 45%; margin-right: 45%;
+}
+table.table-center-20 {
+	width: 20%; margin-left: 40%; margin-right: 40%;
+}
+table.table-center-30 {
+	width: 30%; margin-left: 35%; margin-right: 35%;
+}
+table.table-center-40 {
+	width: 40%; margin-left: 30%; margin-right: 30%;
+}
+table.table-center-50 {
+	width: 50%; margin-left: 25%; margin-right: 25%;
+}
+table.table-center-60 {
+	width: 60%; margin-left: 20%; margin-right: 20%;
+}
+table.table-center-70 {
+	width: 70%; margin-left: 15%; margin-right: 15%;
+}
+table.table-center-80 {
+	width: 80%; margin-left: 10%; margin-right: 10%;
+}
+table.table-center-90 {
+	width: 90%; margin-left: 5%; margin-right: 5%;
+}
+table.td-center td {
+	text-align: center !important;
+}
+table.th-center th {
+	text-align: center !important;
+}
+table.td-middle td {
+	vertical-align: middle !important;
+}
+table.th-middle th {
+	vertical-align: middle !important;
+}
+table.subtask-table td ul, table.subtask-table td ol {
+	margin-bottom: 0 !important;
+}
+table.subtask-table td p:last-child {
+	margin-bottom: 0;
+}
+.solvedac-tier-name--1:after {
+	color: #000000;
+	content: "난이도를 매길 수 없음";
+}
+.solvedac-tier-name--1:lang(en):after {
+	content: "Not ratable";
+}
+.solvedac-tier-name-0:after {
+	color: #000000;
+	content: "난이도 정보 없음";
+}
+.solvedac-tier-name-0:lang(en):after {
+	content: "Unrated";
+}
+.solvedac-tier-name-1:after {
+	color: #ad5600;
+	content: "브론즈 V";
+}
+.solvedac-tier-name-1:lang(en):after {
+	content: "Bronze V";
+}
+.solvedac-tier-name-2:after {
+	color: #ad5600;
+	content: "브론즈 IV";
+}
+.solvedac-tier-name-2:lang(en):after {
+	content: "Bronze IV";
+}
+.solvedac-tier-name-3:after {
+	color: #ad5600;
+	content: "브론즈 III";
+}
+.solvedac-tier-name-3:lang(en):after {
+	content: "Bronze III";
+}
+.solvedac-tier-name-4:after {
+	color: #ad5600;
+	content: "브론즈 II";
+}
+.solvedac-tier-name-4:lang(en):after {
+	content: "Bronze II";
+}
+.solvedac-tier-name-5:after {
+	color: #ad5600;
+	content: "브론즈 I";
+}
+.solvedac-tier-name-5:lang(en):after {
+	content: "Bronze I";
+}
+.solvedac-tier-name-6:after {
+	color: #435f7a;
+	content: "실버 V";
+}
+.solvedac-tier-name-6:lang(en):after {
+	content: "Silver V";
+}
+.solvedac-tier-name-7:after {
+	color: #435f7a;
+	content: "실버 IV";
+}
+.solvedac-tier-name-7:lang(en):after {
+	content: "Silver IV";
+}
+.solvedac-tier-name-8:after {
+	color: #435f7a;
+	content: "실버 III";
+}
+.solvedac-tier-name-8:lang(en):after {
+	content: "Silver III";
+}
+.solvedac-tier-name-9:after {
+	color: #435f7a;
+	content: "실버 II";
+}
+.solvedac-tier-name-9:lang(en):after {
+	content: "Silver II";
+}
+.solvedac-tier-name-10:after {
+	color: #435f7a;
+	content: "실버 I";
+}
+.solvedac-tier-name-10:lang(en):after {
+	content: "Silver I";
+}
+.solvedac-tier-name-11:after {
+	color: #ec9a00;
+	content: "골드 V";
+}
+.solvedac-tier-name-11:lang(en):after {
+	content: "Gold V";
+}
+.solvedac-tier-name-12:after {
+	color: #ec9a00;
+	content: "골드 IV";
+}
+.solvedac-tier-name-12:lang(en):after {
+	content: "Gold IV";
+}
+.solvedac-tier-name-13:after {
+	color: #ec9a00;
+	content: "골드 III";
+}
+.solvedac-tier-name-13:lang(en):after {
+	content: "Gold III";
+}
+.solvedac-tier-name-14:after {
+	color: #ec9a00;
+	content: "골드 II";
+}
+.solvedac-tier-name-14:lang(en):after {
+	content: "Gold II";
+}
+.solvedac-tier-name-15:after {
+	color: #ec9a00;
+	content: "골드 I";
+}
+.solvedac-tier-name-15:lang(en):after {
+	content: "Gold I";
+}
+.solvedac-tier-name-16:after {
+	color: #27e2a4;
+	content: "플래티넘 V";
+}
+.solvedac-tier-name-16:lang(en):after {
+	content: "Platinum V";
+}
+.solvedac-tier-name-17:after {
+	color: #27e2a4;
+	content: "플래티넘 IV";
+}
+.solvedac-tier-name-17:lang(en):after {
+	content: "Platinum IV";
+}
+.solvedac-tier-name-18:after {
+	color: #27e2a4;
+	content: "플래티넘 III";
+}
+.solvedac-tier-name-18:lang(en):after {
+	content: "Platinum III";
+}
+.solvedac-tier-name-19:after {
+	color: #27e2a4;
+	content: "플래티넘 II";
+}
+.solvedac-tier-name-19:lang(en):after {
+	content: "Platinum II";
+}
+.solvedac-tier-name-20:after {
+	color: #27e2a4;
+	content: "플래티넘 I";
+}
+.solvedac-tier-name-20:lang(en):after {
+	content: "Platinum I";
+}
+.solvedac-tier-name-21:after {
+	color: #00b4fc;
+	content: "다이아몬드 V";
+}
+.solvedac-tier-name-21:lang(en):after {
+	content: "Diamond V";
+}
+.solvedac-tier-name-22:after {
+	color: #00b4fc;
+	content: "다이아몬드 IV";
+}
+.solvedac-tier-name-22:lang(en):after {
+	content: "Diamond IV";
+}
+.solvedac-tier-name-23:after {
+	color: #00b4fc;
+	content: "다이아몬드 III";
+}
+.solvedac-tier-name-23:lang(en):after {
+	content: "Diamond III";
+}
+.solvedac-tier-name-24:after {
+	color: #00b4fc;
+	content: "다이아몬드 II";
+}
+.solvedac-tier-name-24:lang(en):after {
+	content: "Diamond II";
+}
+.solvedac-tier-name-25:after {
+	color: #00b4fc;
+	content: "다이아몬드 I";
+}
+.solvedac-tier-name-25:lang(en):after {
+	content: "Diamond I";
+}
+.solvedac-tier-name-26:after {
+	color: #ff0062;
+	content: "루비 V";
+}
+.solvedac-tier-name-26:lang(en):after {
+	content: "Ruby V";
+}
+.solvedac-tier-name-27:after {
+	color: #ff0062;
+	content: "루비 IV";
+}
+.solvedac-tier-name-27:lang(en):after {
+	content: "Ruby IV";
+}
+.solvedac-tier-name-28:after {
+	color: #ff0062;
+	content: "루비 III";
+}
+.solvedac-tier-name-28:lang(en):after {
+	content: "Ruby III";
+}
+.solvedac-tier-name-29:after {
+	color: #ff0062;
+	content: "루비 II";
+}
+.solvedac-tier-name-29:lang(en):after {
+	content: "Ruby II";
+}
+.solvedac-tier-name-30:after {
+	color: #ff0062;
+	content: "루비 I";
+}
+.solvedac-tier-name-30:after {
+	content: "Ruby I";
+}
+div.main-slider-ad {
+	max-width: 1170px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.overline {
+	text-decoration: overline;
+}
+table#problemset-options tr td p:last-child {
+	margin-bottom: 0;
+}
+
