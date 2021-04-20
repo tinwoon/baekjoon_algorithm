@@ -1,5 +1,7 @@
 //https://www.acmicpc.net/problem/10942
 //틀린이유 -> 짝수일때도 팰린드롬이 성립한다는 것을 생각하지못해서 홀수일떄만 비교함
+//팰린드롭의 경우 dp를 사용해서 진행하면 된다.
+//dp[s][e]는 s부터 e까지의 단어가 팰린드롭이면 1 아니면 0임을 의미하도록 구현했다.
 
 #include <iostream>
 #include <vector>

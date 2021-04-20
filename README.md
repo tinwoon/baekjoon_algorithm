@@ -1214,3 +1214,67 @@ bool compare(int a, int b){
 > 이 식을 모듈러 연산으로 해보면 sum[j]%M == sum[i]%M이 되는 것으로 sum의 나머지가 같은 값 끼리 두개씩 고르는 경우의 수를 고르면 된다.
 >
 > 즉, dp[i]에는 나머지가 i인 sum의 개수가 들어 있으므로 그 개수에서 두개씩 고르는 조합의 공식은 dp[i] * (dp[i] - 1) / 2;이다.
+
+
+
+#### 88. 팰린드롬 문제의 중요성은 dp의 방식이다.(쿠* 코딩테스트 문제)
+
+- `dp[s][e]`로 선언하면 해당 문제를 쉽게 풀 수 있다.
+
+  s부터 e까지의 문자열이 팰린드롭이면 1아니면 0을 추가한다.
+
+#### 89. 배열 B의 값 문제는 floodfill과 비슷한 형태이다.
+
+- 미리 B를 구하기 위한 A원소의 값을 몇번씩 더해주는지 규칙을 찾아 행렬로 만들어 곱하고 빼면 된다.
+
+#### 90. 트리 순회(후위 전위 중위 순회)는 관련 공식처럼 알고리즘이 정해져 있다.
+
+- `void calculate(int in_begin, int in_end, int post_begin, int post_end)`로 선언해 재귀적으로 구현한다.
+- 이때 위처엄 inorder의 begin, inorder의 end, postorder의 begin, postorder의 end 처럼 구현하는 이유는 각각의 순회별로 왼쪽노드의 크기와 오른쪽 노드의 크기, 그리고 그 노드의 root값을 알기 위함이다.
+
+```c
+#pragma warning(disable: 4996)
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int N;
+std::vector<int> in_order;
+std::vector<int> post_order;
+//i번 node는 inorder의 i번째에 있다.
+int find_index[100001];
+
+//index는 n번 노드를 의미한다.
+void calculate(int in_begin, int in_end, int post_begin, int post_end) {
+	if (in_begin > in_end || post_begin > post_end) return;
+
+	int root = post_order[post_end];
+	printf("%d ", root);
+	//왼쪽으로 이동
+    //다음과 같이 매개변수를 놓는 이유는 begin과 end사이가 각각의 순위 별 사이즈가 되기 때문이다.
+    //여기서는 inorder의 begin부터 end까지를 알면 왼쪽 노드의 inorder사이즈를 알 수 있고 postorder도 마찬가지이다.
+	calculate(in_begin, find_index[root] - 1, post_begin, post_begin + (find_index[root] - in_begin) - 1);
+	//오른쪽으로 이동
+	calculate(find_index[root] + 1, in_end, post_begin + (find_index[root] - in_begin)  ,post_end - 1);
+	return;
+}
+
+
+int main() {
+	scanf("%d", &N);
+	for (int i = 0; i < N; i++) {
+		int node_num;
+		scanf("%d", &node_num);
+		in_order.emplace_back(node_num);
+		//node_num번 노드는 i번째에 있다.
+		find_index[node_num] = i;
+	}
+	for (int i = 0; i < N; i++) {
+		int node_num;
+		scanf("%d", &node_num);
+		post_order.emplace_back(node_num);
+	}
+	calculate(0, N-1, 0, N-1);
+}
+```
+
