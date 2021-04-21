@@ -1278,3 +1278,14 @@ int main() {
 }
 ```
 
+#### 91. itr 내부에 pair를 접근해야할 때가 있다.
+
+- 예를 들면 `std::vector< std::pair<int, int> > vp`에서 pair구조를 접근하려면 다음과 같이 하면 된다.
+
+  > for(auto itr = vp.begin(); itr!=vp.end(); itr++){
+  >
+  > ​	printf("%d\n", itr->first);
+  >
+  > ​	printf("%d\n", itr->second);
+  >
+  > }
