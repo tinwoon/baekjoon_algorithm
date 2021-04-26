@@ -6,6 +6,10 @@
 #include <numeric>
 #include <limits.h>
 
+struct bridge {
+    int from, to, cost;
+};
+
 bool map[11][11];
 //i,j좌표는 n번 섬에 해당한다.
 int map_island[11][11];
@@ -13,6 +17,12 @@ int map_island[11][11];
 int is_connected[7][7];
 //i번 섬과 j번 섬번째를 연결 시켰다
 bool visited[7][7];
+//연결가능한 모든 다리의 경우의 수
+std::vector< bridge > bridges;
+//i번과 j번이 서로 연결되어 있다.
+bool connect[7][7];
+//서로간에 연결되어 있는지 확인했다.
+bool check[7];
 
 int N, M;
 int dx[4] = { -1,0,1,0 };
@@ -21,29 +31,44 @@ int dy[4] = { 0,1,0,-1 };
 int sum_count = 1;
 int ans = INT_MAX;
 
-void dfs(int first_node, int second_node, int count, int rst) {
-    if (count == sum_count - 1) {
-        ans = std::min(ans, rst);
-        return;
-    }
 
-    visited[first_node][second_node] = visited[second_node][first_node] = true;
 
-    for (int i = first_node; i < sum_count; i++) {
-        for (int j = first_node + 1; j < sum_count; j++) {
-            if (i == j || visited[i][j] || visited[j][i]) continue;
-            if (is_connected[i][j]) {
-                dfs(i, j, count + 1, rst + is_connected[i][j]);
-                visited[i][j] = visited[j][i] = false;
-            }
+void find(int first) {
+    for (int second = 1; second <= sum_count - 1; second++) {
+        if (connect[first][second] && !check[second]) {
+            check[second] = true;
+            find(second);
         }
     }
+}
 
+//다리들의 합, 건설한 다리의 개수, 몇번째 bridges를 연결할건지
+void go(int rst, int index, int loc) {
 
+    if (index > sum_count - 1) return;
+    if (ans != INT_MAX && ans < rst) return;
+    if (index + ((int)bridges.size() - loc + 1) < sum_count - 2) return;
+
+    //다리가 연결되었다면
+    if (loc == bridges.size()) {
+        memset(check, false, sizeof(check));
+        check[1] = true;
+        find(1);
+        for (int i = 1; i <= sum_count - 1; i++) {
+            if (check[i] == false) return;
+        }
+        ans = std::min(rst, ans);
+        return;
+    }
+    //연결할거야
+    connect[bridges[loc].to][bridges[loc].from] = connect[bridges[loc].from][bridges[loc].to] = true;
+    go(rst + is_connected[bridges[loc].from][bridges[loc].to], index + 1, loc + 1);
+    connect[bridges[loc].to][bridges[loc].from] = connect[bridges[loc].from][bridges[loc].to] = false;
+    go(rst, index, loc + 1);
 }
 
 //i,j가 얼마간의 거리로 연결되어 있는지 => 0이면 연결 안되어 있는거
-void bfs() {
+void confirm() {
     //서로 연결되어 있는지를 확인하고 얼마간의 거리가 있는지 정리
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < M; j++) {
@@ -56,6 +81,9 @@ void bfs() {
                             if (map_island[nx][ny] == map_island[i][j]) break;
                             int distance = abs(i - nx) + abs(j - ny) - 1;
                             is_connected[map_island[nx][ny]][map_island[i][j]] = is_connected[map_island[i][j]][map_island[nx][ny]] = distance < 2 ? 0 : distance;
+                            if (is_connected[map_island[nx][ny]][map_island[i][j]]) {
+                                bridges.emplace_back(bridge{ map_island[nx][ny], map_island[i][j], is_connected[map_island[nx][ny]][map_island[i][j]] });
+                            }
                             break;
                         }
                         nx += dx[k];
@@ -99,7 +127,7 @@ int main() {
             }
         }
     }
-    bfs();
-    dfs(1, 1, 0, 0);
+    confirm();
+    go(0, 0, 0);
     printf("%d", ans == INT_MAX ? -1 : ans);
 }
