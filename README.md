@@ -1230,7 +1230,7 @@ bool compare(int a, int b){
 #### 90. 트리 순회(후위 전위 중위 순회)는 관련 공식처럼 알고리즘이 정해져 있다.
 
 - `void calculate(int in_begin, int in_end, int post_begin, int post_end)`로 선언해 재귀적으로 구현한다.
-- 이때 위처엄 inorder의 begin, inorder의 end, postorder의 begin, postorder의 end 처럼 구현하는 이유는 각각의 순회별로 왼쪽노드의 크기와 오른쪽 노드의 크기, 그리고 그 노드의 root값을 알기 위함이다.
+- 이때 위처럼 inorder의 begin, inorder의 end, postorder의 begin, postorder의 end 처럼 구현하는 이유는 각각의 순회별로 왼쪽노드의 크기와 오른쪽 노드의 크기, 그리고 그 노드의 root값을 알기 위함이다.
 
 ```c
 #pragma warning(disable: 4996)
@@ -1289,3 +1289,29 @@ int main() {
   > ​	printf("%d\n", itr->second);
   >
   > }
+
+
+
+#### 92. struct 구조체를 vector에 넣는 방법도 있다.(백준 17472 다리만들기2)
+
+- `bridges.emplace_back(bridege{i,j,is_connected[i][j]});`가 중요하다.
+
+ ```c++
+ struct bridge {
+     int from, to, cost;
+ };
+ std::vector< bridge > bridges;
+ 
+ void input_bridge(){
+     for(int i=1; i<sum_count; i++){
+         for(int j=i+1; j<sum_count; j++){
+             if(is_connected[i][j]){
+                 bridges.emplace_back(bridege{i,j,is_connected[i][j]});
+             }
+         }
+     }
+ }
+ ```
+
+
+

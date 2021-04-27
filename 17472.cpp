@@ -1,3 +1,5 @@
+//질이 좋지 않은 문제지만 bridge 관련 내용은 기억해두자.
+
 #pragma warning(disable: 4996)
 #include <iostream>
 #include <vector>
@@ -79,11 +81,10 @@ void confirm() {
                     while (nx >= 0 && nx < N && ny >= 0 && ny < M) {
                         if (map_island[nx][ny]) {
                             if (map_island[nx][ny] == map_island[i][j]) break;
-                            int distance = abs(i - nx) + abs(j - ny) - 1;
-                            is_connected[map_island[nx][ny]][map_island[i][j]] = is_connected[map_island[i][j]][map_island[nx][ny]] = distance < 2 ? 0 : distance;
-                            if (is_connected[map_island[nx][ny]][map_island[i][j]]) {
-                                bridges.emplace_back(bridge{ map_island[nx][ny], map_island[i][j], is_connected[map_island[nx][ny]][map_island[i][j]] });
-                            }
+                            int distance = (abs(i - nx) + abs(j - ny) - 1) < 2 ? 0 : (abs(i - nx) + abs(j - ny) - 1);
+                            if (distance == 0) break;
+                            if (!is_connected[map_island[nx][ny]][map_island[i][j]] || !is_connected[map_island[i][j]][map_island[nx][ny]]) is_connected[map_island[nx][ny]][map_island[i][j]] = is_connected[map_island[i][j]][map_island[nx][ny]] = distance;
+                            else is_connected[map_island[nx][ny]][map_island[i][j]] = is_connected[map_island[i][j]][map_island[nx][ny]] = std::min({ distance, is_connected[map_island[nx][ny]][map_island[i][j]], is_connected[map_island[i][j]][map_island[nx][ny]] });
                             break;
                         }
                         nx += dx[k];
@@ -94,6 +95,17 @@ void confirm() {
         }
     }
 }
+
+void input_bridge() {
+    for (int i = 1; i < sum_count; i++) {
+        for (int j = i + 1; j < sum_count; j++) {
+            if (is_connected[i][j]) {
+                bridges.emplace_back(bridge{ i, j, is_connected[i][j] });
+            }
+        }
+    }
+}
+
 
 void calculate(int i, int j, int sum_count) {
     if (map_island[i][j] || i < 0 || i >= N || j < 0 || j >= M) return;
@@ -128,6 +140,7 @@ int main() {
         }
     }
     confirm();
+    input_bridge();
     go(0, 0, 0);
     printf("%d", ans == INT_MAX ? -1 : ans);
 }
