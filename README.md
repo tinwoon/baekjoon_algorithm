@@ -1366,3 +1366,14 @@ int main() {
 
 #### 95. 위상정렬 알고리즘은 DFS로도 풀 수 있다.
 
+
+
+#### 96. `priority_queue<int> q;`의 정확한 자료형은 다음과 같다.
+
+```c
+priority_queue<int> q< int, vector<int>, less<int> > q;
+```
+
+- 본래는 다음과 같이 정의를 하게 되는데 less의 경우 내림차순으로 q를 뱉어내는 방식이다.
+- 만약 오름차순으로 뱉어내고 싶다면 greater를 넣으면 된다.
+
