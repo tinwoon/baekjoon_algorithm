@@ -1,49 +1,54 @@
 #pragma warning(disable: 4996)
 #include <iostream>
 #include <queue>
+#include <algorithm>
+#include <limits.h>
 #include <vector>
-#include <tuple>
+#include <string.h>
 
 //수빈이의 위치 N, 동생의 위치 K
 int N, K;
-bool visited[500001];
+//n번 위치를 몇 번쩨에 방문했나.
+//홀수일때 0 짝수일때 1
+int node[500001][2];
+
 
 int bfs() {
-	std::queue< std::tuple<int, int, int> > q;
-	q.emplace(std::make_tuple(N, K, 0));
-	visited[N] = true;
+	//tuple에는 N번이 들어가야 한다.
+	std::queue< std::pair<int, int> > q;
+	q.emplace(std::make_pair(N, 0));
+	node[N][0] = 0;
 
 	while (!q.empty()) {
-		int x, y, num;
-		std::tie(x, y, num) = q.front();
+		auto front = q.front();
 		q.pop();
+		int x = front.first;
+		int num = front.second;
 
-		if (x == y) return num;
-
-
-		if (x - 1 >= 0 && y + num + 1 <= 500000) {
-			if (!visited[x - 1]) {
-				q.emplace(std::make_tuple(x + 1, y + num + 1, num + 1));
-				visited[x - 1] = true;
-			}
-		}
-		if (x + 1 <= 500000 && y + num + 1 <= 500000) {
-			if (!visited[x + 1]) {
-				q.emplace(std::make_tuple(x - 1, y + num + 1, num + 1));
-				visited[x + 1] = true;
-			}
-		}
-		if (2 * x <= 500000 && y + num + 1 <= 500000) {
-			if (!visited[2 * x]) {
-				q.emplace(std::make_tuple(2 * x, y + num + 1, num + 1));
-				visited[2 * x] = true;
+		for (int y : {x - 1, x + 1, 2 * x}) {
+			if (y >= 0 && y <= 500000) {
+				if (node[y][(num + 1) % 2] == -1) {
+					node[y][(num + 1) % 2] = node[x][num] + 1;
+					q.emplace(std::make_pair(y, (num + 1) % 2));
+				}
 			}
 		}
 	}
-	return -1;
+	int ans = -1;
+	int k = K;
+	for (int time = 0; ; time++) {
+		k += time;
+		if (k > 500000) break;
+		if (node[k][time % 2] <= time) {
+			ans = time;
+			break;
+		}
+	}
+	return ans;
 }
 
 int main() {
+	memset(node, -1, sizeof(node));
 	scanf("%d %d", &N, &K);
 	printf("%d", bfs());
 }
