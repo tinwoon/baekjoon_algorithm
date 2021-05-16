@@ -1391,3 +1391,29 @@ for (int y : {x-1, x+1, 2*x}){
 }
 ```
 
+
+
+#### 99. map에 insert와 emplace의 차이점
+
+- 다음과 같은 차이가 있다.
+
+  > map::insert
+  >
+  > - insert를 사용하면 key와 value의 pair를 삽입할 수 있다.
+  >
+  > ```c++
+  > std::map<int, int> dic;
+  > dic.insert(std::make_pair(1,3));
+  > ```
+  >
+  > map::emplace
+  >
+  > - insert와 비슷하지만 이쪽은 값을 key와 value의 생성자에 전송한 값을 구축한다.
+  >
+  > ```c++
+  > std::map<int,int> dic;
+  > dic.emplace(1,3); //dic.insert(std::make_pair(1,3))와 같다.
+  > ```
+  >
+  > 
+
