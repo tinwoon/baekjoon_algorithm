@@ -1500,3 +1500,6 @@ void calculate(int i, int j) {
 
 
 
+#### 109. KMP 알고리즘은 다음과 같은 형식이다. 해당 블로그를 참조하자.
+
+- https://gusdnd852.tistory.com/172
