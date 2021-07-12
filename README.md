@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	
+>    	      
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->    
+>          
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -1591,6 +1591,7 @@ int main()
 
 
 
+<<<<<<< HEAD
 #### 114. 다익스트라 구조는 다음과 같다. (외워두자)
 
 ```c++
@@ -1618,3 +1619,56 @@ void calculate(int node) {
 
 
 
+=======
+#### 114. 회전 알고리즘은 두가지가 있다.
+
+1. 회전을 하지만 기존의 배열은 변경되어 임의의 변경에 회전을 저장한 후 다시 받는 방법
+
+   ```c++
+   void rotate(int n){
+       for(int i=0; i<n; i++){
+           for(int j=0; j<n; j++){
+               temp[i][j] = arr[n-1-j][i];
+           }
+       }
+       for(int i=0; i<n; i++){
+           for(int j=0; j<n; j++){
+               arr[i][j] = temp[i][j];
+           }
+       }
+   }
+   ```
+
+2. 회전을 하지만 기존의 배열은 유지하는 방법([N by N 행렬을 시계 방향 90도 회전 (tistory.com)](https://hsdevelopment.tistory.com/298))
+
+   - 다음과 같이 바깥쪽을 최외각으로 빨간색은 파란색으로, 파란색은 노란색으로 진행하는 규칙이 있다. 따라서 맨 처음의 값만 변수에 저장하고 돌리면서 마지막에는 저장한 변수를 넣으면 된다. 
+
+   ![image](https://user-images.githubusercontent.com/18729679/124491411-37059600-ddee-11eb-8d3b-f10c8c026f30.png)
+
+   ```c++
+   void rotate()
+   {
+       for (int i = 0; i < MAX / 2; i++)
+           for (int j = i; j < MAX - 1 - i; j++)
+           {
+               int Top = arr[i][j]; // Top ← 위쪽
+    
+               arr[i][j] = arr[MAX - 1 - j][i]; // 위쪽 ← 왼쪽
+    
+               arr[MAX - 1 - j][i] = arr[MAX - 1 - i][MAX - 1 - j]; // 왼쪽 ← 아래쪽
+    
+               arr[MAX - 1 - i][MAX - 1 - j] = arr[j][MAX - 1 - i]; // 아래쪽 ← 오른쪽
+    
+               arr[j][MAX - 1 - i] = Top; // 오른쪽 ← Top(위쪽)
+           }
+   }
+   ```
+
+   
+
+#### 115. x번 부터 y번 까지의 합을 메모리제이션 하고 싶다면 다음과 같이 선언하는 법이 더 빠르다.
+
+> `dp[i][j]`의 2중 배열 구조로 선언하여 i~j까지의 dp값을 의미하는 방식으로 사용할 수도 있지만
+>
+> `dp[i] - dp[j]`의 배열 구조로 선언하여 0~i번 인덱스 까지의 합 - 0~j번 인덱스 까지의 합으로 선언된 배열로 구하는 방법이 메모리 할당을 낮출 수 있다.
+>>>>>>> 62efb6ae7c37a6b911d3443e4a0cdd1a7debd88f
