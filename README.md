@@ -1589,3 +1589,32 @@ int main()
 > 1. 만약 1,2,3의 숫자가 있고, 4번 이동할때 1로 된다면, 1번에서 15번을 이동하면 다음과 15 % 3 = 0, 즉 1번에서 0번 이동함을 알 수 있다.
 > 2. 만약 3번에서 14번을 이동한다면, 14 % 3 = 2, 이므로 3 + 2 = 5가 된다. 따라서 해당 값에도 % 처리를 해줘야한다.
 
+
+
+#### 114. 다익스트라 구조는 다음과 같다. (외워두자)
+
+```c++
+int V, E, K;
+bool visited[20001];
+std::vector< std::vector< std::pair<int, int> > > connected;
+std::vector<int> weight(20001, INT_MAX);
+int ans = 0;
+std::priority_queue< std::pair<int, int>, std::vector< std::pair<int, int> >, std::greater< std::pair<int, int> > > q;
+
+void calculate(int node) {
+	visited[node] = true;
+	for (int node_t = 0; node_t < connected[node].size(); node_t++) {
+		weight[connected[node][node_t].first] = std::min(weight[node] + connected[node][node_t].second, weight[connected[node][node_t].first]);
+		//가중치, node의 번호
+		q.emplace(std::make_pair(weight[connected[node][node_t].first], connected[node][node_t].first));
+	}
+	while (!q.empty()) {
+		auto front = q.top();
+		q.pop();
+		if (!visited[front.second]) calculate(front.second);
+	}
+}
+```
+
+
+
