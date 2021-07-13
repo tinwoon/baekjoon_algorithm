@@ -1590,36 +1590,6 @@ int main()
 > 2. 만약 3번에서 14번을 이동한다면, 14 % 3 = 2, 이므로 3 + 2 = 5가 된다. 따라서 해당 값에도 % 처리를 해줘야한다.
 
 
-
-<<<<<<< HEAD
-#### 114. 다익스트라 구조는 다음과 같다. (외워두자)
-
-```c++
-int V, E, K;
-bool visited[20001];
-std::vector< std::vector< std::pair<int, int> > > connected;
-std::vector<int> weight(20001, INT_MAX);
-int ans = 0;
-std::priority_queue< std::pair<int, int>, std::vector< std::pair<int, int> >, std::greater< std::pair<int, int> > > q;
-
-void calculate(int node) {
-	visited[node] = true;
-	for (int node_t = 0; node_t < connected[node].size(); node_t++) {
-		weight[connected[node][node_t].first] = std::min(weight[node] + connected[node][node_t].second, weight[connected[node][node_t].first]);
-		//가중치, node의 번호
-		q.emplace(std::make_pair(weight[connected[node][node_t].first], connected[node][node_t].first));
-	}
-	while (!q.empty()) {
-		auto front = q.top();
-		q.pop();
-		if (!visited[front.second]) calculate(front.second);
-	}
-}
-```
-
-
-
-=======
 #### 114. 회전 알고리즘은 두가지가 있다.
 
 1. 회전을 하지만 기존의 배열은 변경되어 임의의 변경에 회전을 저장한 후 다시 받는 방법
@@ -1671,4 +1641,34 @@ void calculate(int node) {
 > `dp[i][j]`의 2중 배열 구조로 선언하여 i~j까지의 dp값을 의미하는 방식으로 사용할 수도 있지만
 >
 > `dp[i] - dp[j]`의 배열 구조로 선언하여 0~i번 인덱스 까지의 합 - 0~j번 인덱스 까지의 합으로 선언된 배열로 구하는 방법이 메모리 할당을 낮출 수 있다.
->>>>>>> 62efb6ae7c37a6b911d3443e4a0cdd1a7debd88f
+
+
+
+#### 116. 다익스트라 구조는 다음과 같다. (외워두자)
+
+```c++
+int V, E, K;
+bool visited[20001];
+std::vector< std::vector< std::pair<int, int> > > connected;
+std::vector<int> weight(20001, INT_MAX);
+int ans = 0;
+std::priority_queue< std::pair<int, int>, std::vector< std::pair<int, int> >, std::greater< std::pair<int, int> > > q;
+
+void calculate(int node) {
+	visited[node] = true;
+	for (int node_t = 0; node_t < connected[node].size(); node_t++) {
+		weight[connected[node][node_t].first] = std::min(weight[node] + connected[node][node_t].second, weight[connected[node][node_t].first]);
+		//가중치, node의 번호
+		q.emplace(std::make_pair(weight[connected[node][node_t].first], connected[node][node_t].first));
+	}
+	while (!q.empty()) {
+		auto front = q.top();
+		q.pop();
+		if (!visited[front.second]) calculate(front.second);
+	}
+}
+```
+
+
+
+=======
