@@ -1647,28 +1647,38 @@ int main()
 #### 116. 다익스트라 구조는 다음과 같다. (외워두자)
 
 ```c++
-int V, E, K;
-bool visited[20001];
-std::vector< std::vector< std::pair<int, int> > > connected;
-std::vector<int> weight(20001, INT_MAX);
-int ans = 0;
 std::priority_queue< std::pair<int, int>, std::vector< std::pair<int, int> >, std::greater< std::pair<int, int> > > q;
+std::vector< std::vector< std::pair<int, int> > > connected;
+std::vector<int> weight;
 
 void calculate(int node) {
-	visited[node] = true;
-	for (int node_t = 0; node_t < connected[node].size(); node_t++) {
-		weight[connected[node][node_t].first] = std::min(weight[node] + connected[node][node_t].second, weight[connected[node][node_t].first]);
-		//가중치, node의 번호
-		q.emplace(std::make_pair(weight[connected[node][node_t].first], connected[node][node_t].first));
-	}
+	q.emplace(std::make_pair(0, node));
+	weight[node] = 0;
+
 	while (!q.empty()) {
 		auto front = q.top();
 		q.pop();
-		if (!visited[front.second]) calculate(front.second);
+
+		int cost = front.first;
+		int p_node = front.second;
+
+		for (int k = 0; k < connected[p_node].size(); k++) {
+			int ncost = connected[p_node][k].second;
+			int n_node = connected[p_node][k].first;
+			
+			if (weight[n_node] > cost + ncost) {
+				weight[n_node] = cost + ncost;
+				q.emplace(std::make_pair(weight[n_node], n_node));
+			}
+		}
 	}
 }
+
 ```
 
 
 
-=======
+#### 117. 다익스트라 변형 문제는 n번 노드를 꼭 방문해야하는 방식으로 정해져 있다.
+
+- 예를 들면 T번을 꼭 방문하는 최단 경로를 찾는다면
+- start번부터 T번까지의 최단 경로를 찾은 후,  end부터 T번까지를 찾아서 각각의 Weight[T] 값을 구하면 된다.
