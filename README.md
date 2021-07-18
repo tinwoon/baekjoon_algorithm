@@ -1682,3 +1682,140 @@ void calculate(int node) {
 
 - 예를 들면 T번을 꼭 방문하는 최단 경로를 찾는다면
 - start번부터 T번까지의 최단 경로를 찾은 후,  end부터 T번까지를 찾아서 각각의 Weight[T] 값을 구하면 된다.
+
+
+
+#### 118. 벨만 포드 알고리즘은 다음과 같은 원리이다.(https://ssungkang.tistory.com/entry/Algorithm-%EB%B2%A8%EB%A7%8C%ED%8F%AC%EB%93%9CBellman-Ford-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)
+
+- 예를 들어 1->2를 가는데 3이고 2 -> 3을 가는데 5이고, 3 -> 1을 가는데 -6이라 가정하면 1 -> 3 번노드로 방문하는 최단 경로는 몇인가? => 3 + 5인 8이 아닌 무한히 음수에 다가간다. 3 + 5 - 6을 하면 -1이되고 즉, 1번 노드를 방문하는데 0 , -1, -2, -3, -4 ...으로 계속해서 최소값을 싸이클을 돌며 방문하는 것을 알 수 있다.
+
+- 따라서 벨만 포드는 기존의 다익스트라와 비슷하지만 다익스트라 장점인 최적화 Priority queue를 쓰지 않으며 모든 노드를 계속 무대포로 탐색하는 방식이기에 다익스트라 보다 현저히 느리다.
+
+- 다만 cycle의 형성을 확인할 수 있기에 음수의 가중치가진 간선의 최단 경로를 알 수 있단 장점외에는 없다.
+
+- **반드시 노드의 길이가 N개라면 N번 탐색한다는 것을 기억해야한다.**
+
+  
+
+```c++
+//만약 노드의 길이가 5개(N개)라면 타고갈 수 있는 간선은 1 ->2 ->3 ->4 ->5. 즉, 화살표의 개수인 4개가 최대이다.(최대 N-1번까지)
+//하지만 5번이상 경로갱신을 시도했는데 갱신이 가능하다는 의미는 확실하게 cycle이 생성되었다는 의미이다.
+//따라서 i == N의 의미는 cycle이 생성된 상태에서 갱신되었다는 의미이므로 cycle 값을 true로 놓으면 해당 그래프는 최단 경로가 무한한 음수에 가깝다는 것을 알 수 있다.
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+#define INF 987654321
+
+int dist[502];
+vector<pair<int,int>> v[502];
+
+int main(){
+    ios_base :: sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    // 정점,간선의 수
+    int N,M;
+    cin >> N >> M;
+    
+    bool cycle = false;
+    
+    for (int i=0;i<M;i++){
+        int node1,node2,w;
+        cin >> node1 >> node2 >> w;
+        v[node1].push_back(make_pair(node2, w));
+    }
+    
+    for (int i=1;i<=N;i++){
+        dist[i] = INF;
+    }
+    
+    /////////////////////////////////////////여기부터 중요/////////////////////////////////////////
+    
+    dist[1] = 0;
+  	// 경로의 길이는 N-1 이고 N 이 된다면 음수사이클 생긴다.
+    for (int i=1;i<=N;i++){
+        // 모든 정점에 대해서 모든 간선을 탐색한다.
+        for (int j=1;j<=N;j++){
+            for (auto &n : v[j]){
+              	// 방문되지 않은 지점에서 출발은 SKIP
+                if (dist[j] != INF && dist[n.first]>n.second + dist[j]){
+                    dist[n.first] = n.second + dist[j];
+                    if (i==N) cycle = true;
+                }
+            }
+        }
+    }
+    
+    if (cycle) cout << "-1\n";
+    else {
+        for (int i=2;i<=N;i++){
+            if (dist[i] == INF) cout << "-1\n";
+            else cout << dist[i] << "\n";
+        }
+    }
+}
+```
+
+
+
+#### 119. 플로이드 와샬 알고리즘(https://dongdd.tistory.com/107)
+
+- 플로이드 와샬 알고리즘은 음수의 가중치까지도 활용할 수가 있다.
+
+- 하지만 위의 **다익스트라와 벨만포드 알고리즘 중 가장 무대포의 알고리즘**으로 웬만하면 사용조차 하지 않는게 좋다고 생각한다.
+
+- **시간 복잡도는 무려 O(N^3)에 connected를 동적이 아닌 배열로 선언하여 연결되지 않은 노드의 공간도 할당해야함으로 메모리 문제도 가지고 있다 .** 
+
+- 대신 코드는 간단하며 다익스트라의 유일한 단점인 음수의 간선을 계산할 수 있다.
+
+- **반드시 맨 위의 for문(아래 예시에서 i번 인덱스)은 중간에 방문하고자 하는 노드라는 것을 기억해야한다.**
+
+- j부터 k까지 방문하는 노드의 최단 경로를 `dp[j][k]`라 한다면 `dp[j][k] = dp[j][i] + dp[i][k] or dp[j][k] 중 최소값`이다. 
+
+  ```c++
+  #include <iostream>
+  #include <vector>
+  #include <algorithm>
+  using namespace std;
+   
+  #define INF INT_MAX
+  int vertex, edge;
+  int arr[100][100];
+  int from, to, weight;
+   
+  void floyd_warshall() {
+      for (int i = 1; i <= vertex; i++) {            // i vertex를 거치는 경우
+          for (int j = 1; j <= vertex; j++) {        // from vertex
+              for (int k = 1; k <= vertex; k++) {    // to vertex
+                  if (arr[j][i] != INF && arr[i][k] != INF) {
+                      arr[j][k] = min(arr[j][k], arr[j][i] + arr[i][k]);
+                  }
+              }
+          }
+      }
+  }
+  int main()
+  {
+      cin >> vertex >> edge;
+      for (int i = 1; i <= vertex; i++) {        // vectex table 초기화
+          for (int j = 1; j <= vertex; j++) {
+              arr[i][j] = INF;
+          }
+      }
+      for (int i = 0; i < edge; i++) {    // from vertex에서 to vertex 입력, 가중치 입력
+          cin >> from >> to >> weight;
+          arr[from][to] = weight;
+      }
+      floyd_warshall();
+      for (int i = 1; i <= vertex; i++) {
+          for (int j = 1; j <= vertex; j++) {
+              cout << i << " -> " << j << "의 최단 경로 : " << arr[i][j] << endl;
+          }
+      }
+  }
+  ```
+
+  
