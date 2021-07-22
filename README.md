@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	      
+>    	         
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->          
+>             
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -1661,6 +1661,10 @@ void calculate(int node) {
 
 		int cost = front.first;
 		int p_node = front.second;
+        
+        //이미 넣어진 같은 노드라도 최단 노드가 아니라면 생략한다.
+        //pq를 통해 최단 경로로 넣었더라도 만약 그 당시에는 가장 최단 경로의 가중치를 가졌다면 이미 들어가 있기 때문에 현재 cost를 확인한 뒤 더 이상 최단의 노드가 아니면 생략한다.
+        if(weight[p_node] < cost) continue;
 
 		for (int k = 0; k < connected[p_node].size(); k++) {
 			int ncost = connected[p_node][k].second;
@@ -1676,7 +1680,20 @@ void calculate(int node) {
 
 ```
 
+![image-20210722213402761](C:\Users\Hello\AppData\Roaming\Typora\typora-user-images\image-20210722213402761.png)
 
+> - 다익스트라는 priority queue를 써야한다. 더 늦게 방문한 정점이라도 더 먼저 방문할 수 있어야하기 때문이다.
+>
+>   - 위의 노드를 예시로 들면 s에서 c로 가는 최단 경로는 2 + 4 + 3인 9가 정답이다.
+>   - 하지만 단순히 queue를 사용하게 되면 노드의 방문 개수가 적은 s -> c의 12를 먼저 탐색하게 되므로 먼저 방문하게 된 s -> c 로부터 s -> c -> b, s-> c -> b -> a 등 최솟 값이 될 수 없는 노드를 모두 굳이 방문해서 최단경로를 찾아보게 된다.
+>   - 따라서 s -> a-> b-> c는 늦게 방문하더라도 더 먼저 방문해야 나중에 s->c로 가는 가중치 12의 노선이 최단 경로가 아님을 일찍이 알아 continue문으로 생략할 수 있다.
+>
+>   
+>
+> - 하지만 priority_queue에서도 최단 경로가 아닌 내역은 분리해 생략해야한다.
+>
+>   - 위에서 이미 설명한 것처럼 s-> a-> b> c를 통해 알게된 최단 거리는 s->c보다 작으므로 s->c에 대해 들어있는 queue값은 생략해야한다.
+>   - 따라서 `if(weight[present_node] < cost) continue`문을 넣어줘야한다.
 
 #### 117. 다익스트라 변형 문제는 n번 노드를 꼭 방문해야하는 방식으로 정해져 있다.
 
