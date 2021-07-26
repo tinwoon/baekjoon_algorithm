@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	               
+>    	                  
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                   
+>                      
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -1874,3 +1874,46 @@ int calculate() {
 >-  lis 값을 계속해서 저장한 배열의 맨 뒤는 항상 이제까지의 lis 중 가장 큰 값을 가지고있다. 따라서 해당 값보다 큰 값이 들어온다면 이제까지의 lis 뒤에 붙임으로서 lis를 갱신해야한다.
 >
 >- 만약 현재 인덱스의 값이 현재까지의 lis의 맨 뒤보다 작다면 lower_bound를 통해 value 내에서 dp[k]보다 크면서 가장 작은 값을 찾아서 해당 값을 dp[k]로 교체해준다. (lis의 경우 길이가 같더라도 무조건 작은 차이로 연속되어 들어가야만 이후의 값들 중 작은 값이 와도 갱신이 가능하다. )
+
+
+#### 121. 38번 소수 에라토스테네스 작성 코드보다 더 직관적인 알고리즘이 있어 해당 구문으로 외우는 것이 좋을 것 같다.
+
+```c++
+//is_prime[N] : 수 N은 소수인가.
+int is_prime[N+1] = {true,};
+
+void eratos() {
+    //수 0과 1은 소수가 아니기 때문에
+	is_prime[0] = is_prime[1] = false;
+
+	for (int i = 2; i <= sqrt(N); i++) {
+		for (int j = i * i; j <= N; j += i) {
+			is_prime[j] = false;
+		}
+	}
+}
+
+//is_prime이 false인 것은 소수가 아니다.
+```
+
+
+
+#### 122. 부분합 문제 코드 역시 더 간단한게 있으니 다음을 참조하자.
+
+```c++
+int array[N];
+
+void prefix_sum(int a, int b){
+    //N개의 수까지 할당을 한다.
+    std::vector<int> sum(N, 0);
+	for (int k = 0; k < N; k++) {
+		if (k == 0) sum[k] = array[k];
+		else sum[k] = sum[k - 1] + array[k];
+	}
+    
+    //a~b까지의 합
+    //a가 0이면 그냥 맨 처음부터 b번 항까지의 합이므로 sum[b]이다.
+    return a==0 ? sum[b]:sum[b] - sum[a-1];
+}
+	
+```

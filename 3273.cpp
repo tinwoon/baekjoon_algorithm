@@ -2,10 +2,12 @@
 #include <vector>
 #include <algorithm>
 
-//투포인터 문제인데 생각보다 어려웠다
-//투포인터의 경우 맨 처음부터 같이 시작하는 경우와 서로 따로 시작하는 점이 있다는 것을 알아두어야 한다. 
+
+//3273번 두 수의 합
+//전형적인 투포인터 형태의 답인데 양식을 지키지 않고 풀음
 
 std::vector<long long> cmd;
+
 long long n, ans, match;
 
 void calculate(long long a, long long b) {
