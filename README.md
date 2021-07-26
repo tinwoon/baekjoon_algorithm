@@ -1839,4 +1839,38 @@ int main(){
   }
   ```
   
-  
+
+
+
+#### 120. 기존의 LIS에 비해 더 간단한 알고리즘을 빠르고, 메모리 절약적이며, 간단하게 구할 수 있다.(https://sihyungyou.github.io/baekjoon-12015/)
+
+```c++
+int N;
+std::vector<int> dp;
+std::vector<int> value;
+
+int calculate() {
+	value.emplace_back(INT_MIN);
+	int count = 0;
+	for (int k = 0; k < N; k++) {
+		if (value.back() < dp[k]) {
+			value.emplace_back(dp[k]);
+			count++;
+		}
+		else {
+			*std::lower_bound(value.begin(), value.end(), dp[k]) = dp[k];
+		}
+	}
+	return count;
+}
+```
+
+>- 초기 맨 처음에 비교값을 위한 value 배열에 제일 작은 값을 넣는다.
+>
+>- 그 다음 모든 수열 값을 차례대로 비교하면서 lis를 갱신하면 된다.
+>
+>  ![image](https://user-images.githubusercontent.com/18729679/127005432-bf1ece6e-b19c-4eb6-a241-859c3935d1f0.png)
+>
+>-  lis 값을 계속해서 저장한 배열의 맨 뒤는 항상 이제까지의 lis 중 가장 큰 값을 가지고있다. 따라서 해당 값보다 큰 값이 들어온다면 이제까지의 lis 뒤에 붙임으로서 lis를 갱신해야한다.
+>
+>- 만약 현재 인덱스의 값이 현재까지의 lis의 맨 뒤보다 작다면 lower_bound를 통해 value 내에서 dp[k]보다 크면서 가장 작은 값을 찾아서 해당 값을 dp[k]로 교체해준다. (lis의 경우 길이가 같더라도 무조건 작은 차이로 연속되어 들어가야만 이후의 값들 중 작은 값이 와도 갱신이 가능하다. )
