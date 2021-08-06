@@ -1,7 +1,7 @@
 # [백준 알고리즘](https://www.acmicpc.net/)
 
 
-![백준 랭크](https://user-images.githubusercontent.com/18729679/103272373-063c4280-4a00-11eb-9290-a6f271f53766.png)
+
 
 
 ###  1. 순열 알고리즘
@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                  
+>    	                        
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                      
+>                            
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -1838,30 +1838,93 @@ int main(){
       }
   }
   ```
-  
 
 
 
 #### 120. 기존의 LIS에 비해 더 간단한 알고리즘을 빠르고, 메모리 절약적이며, 간단하게 구할 수 있다.(https://sihyungyou.github.io/baekjoon-12015/)
 
-```c++
-int N;
-std::vector<int> dp;
-std::vector<int> value;
+![image](https://user-images.githubusercontent.com/18729679/128438584-7a4af6ea-c0a3-40e5-9aeb-8b5b824d0b1a.png)
 
-int calculate() {
-	value.emplace_back(INT_MIN);
-	int count = 0;
+> data가 10 20 10 30 50인 값의 lis를 구해보자
+>
+> 1. 10은 맨처음 lis 배열에 첫번째 인덱스이므로 index배열에 1을 넣어주자
+> 2. 그 다음 20은 lis 배열의 두번째 인덱스이므로 2를 넣어주자
+> 3. 그 다음 10은  lower_bound에 의해 lis 배열의 첫번째 인덱스이므로 1을 넣어준다.
+> 4. 그다음 30은 lis 배열의 세번째 인덱스이다.
+> 5. 그다음 50은 lis 배열의 다섯번째 인덱스이다.
+>
+> 정리하면 lis 배열엔 1 2 1 3 4가 적혀있다.
+>
+> 역순으로 4 3 1 2 1순으로 정리하여 4,3,2,1에 해당하는 인덱스를 차례대로 출력하면 50 30 20 10 이 된다.
+>
+> 이를 역순으로 바꾸면 lis인 10 20 30 50을 구할 수 있다.
+>
+> - 번외로 -2 3 5 1 2 3 4의 index 배열은 1 2 3 1 2 3 4가 되는데 역순이 아니라 정방향으로 1 2 3 4를 찾으면 -2 3 5 4라는 값이 lis로 구해진다. **따라서 반드시 역순에서 진행해야한다.**
+
+```c++
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <limits.h>
+
+//14003 가장 긴 증가하는 부분 수열 5
+//굉장히 중요하다. 꼭 해당알고리즘을 기억할것
+//lis 문제의 가장 효율적인 알고리즘으로
+//k번째의 data에 해당하는 값이 lis 배열에서 몇번째 인덱스에 해당하는지를 적는다.
+//예를 들면 10 20 10 30 20 50의 경우
+//index 배열에는 1 2 1 3 2 4 순으로 저장된다.
+//따라서 lis는 index의 반대 방향으로 4,3,2,1로 해당하는 값인 50 30 20 10을 역순으로 추출하면 된다.
+//왜 역순으로 하고 출력하냐고 생각할 수 있는데
+//-2 3 5 1 2 3 4의 index의 경우 1 2 3 1 2 3 4로 답이 -2 3 5 4라는 올바르지 않은 답안이 생성된다.
+//따라서 뒤에서부터 찾아 역순으로 바꿔 출력해야한다.
+long long N;
+std::vector<long long> data;
+std::vector<long long> lis;
+std::vector<long long> index;
+std::stack<long long> ans;
+
+long long count = 0;
+
+long long calculate() {
+	lis.emplace_back(LLONG_MIN);
+
 	for (int k = 0; k < N; k++) {
-		if (value.back() < dp[k]) {
-			value.emplace_back(dp[k]);
+		if (lis.back() < data[k]) {
 			count++;
+			lis.emplace_back(data[k]);
+			index[k] = (long long)lis.size() - 1;
 		}
 		else {
-			*std::lower_bound(value.begin(), value.end(), dp[k]) = dp[k];
+			auto itr = std::lower_bound(lis.begin(), lis.end(), data[k]);
+			index[k] = (long long)std::distance(lis.begin(), itr);
+			*itr = data[k];
 		}
 	}
+
 	return count;
+}
+
+int main() {
+	scanf("%lld", &N);
+	data.assign(N, 0);
+	index.assign(N, 0);
+	for (int k = 0; k < N; k++) {
+		scanf("%lld", &data[k]);
+	}
+	printf("%lld\n", calculate());
+
+	int r_index = count;
+	for (int k = N - 1; k >= 0; k--) {
+		if (index[k] == r_index) {
+			ans.emplace(data[k]);
+			r_index--;
+		}
+	}
+
+	while (!ans.empty()) {
+		printf("%lld ", ans.top());
+		ans.pop();
+	}
 }
 ```
 
@@ -1917,3 +1980,134 @@ void prefix_sum(int a, int b){
 }
 	
 ```
+
+
+
+#### 123. 이분 탐색 알고리즘은 다음과 같다. 외워두는게 좋을 듯
+
+```c++
+bool calculate(int value) {
+	int begin = 0, end = N - 1;
+    //begin > end이면 종료
+	while (begin <= end) {
+		int mid = (begin + end) / 2;
+		if (A[mid] < value) {
+            //수를 찾을 때 begin = mid가 아닌 +1을 한다는 점 기억
+			begin = mid + 1;
+		}
+		else if (A[mid] > value) {
+            //마찬가지로 end = mid가 아닌 -1을 한다는 점 기억
+			end = mid - 1;
+		}
+		else return true;
+	}
+	return false;
+}
+```
+
+
+
+#### 124.  입국심사, 풍선, 랜선자르기 문제도 꼭 이분탐색으로 어떻게 푸는지 기억할 것
+
+- 이분탐색으로 전체 경우의 수를 대입하면서 답을 찾는 방식을 __파라메트릭 서치__라 한다.
+
+- 브루트포스와 비슷하지만 브루트 포스는 전체를 찾는 방식이고, 파라메트릭 서치는 정렬된 와중에 전체를 찾되 이분탐색을 통해 모든 것을 찾는게 아닌 모든 경우의 수 중 가장 답에 가까운 값을 대입해 답을 찾는 것이다.
+
+- 이분 탐색 자체가 쉬운 알고리즘이기 때문에 파라메트릭 서치 문제일 확률이 높다.
+
+  ```c++
+  #include <iostream>
+  #include <vector>
+  #include <algorithm>
+  #include <limits.h>
+  
+  long long N, M;
+  std::vector<long long> entrance;
+  
+  long long calculate() {
+  	long long begin = 0;
+  	long long end = entrance[N-1] * M;
+  
+  	long long ans = LLONG_MAX;
+  
+  	while (begin <= end) {
+  		long long mid = (begin + end) / 2;
+  		
+  		long long sum = 0;
+  		for (int k = 0; k < N; k++) sum += mid / entrance[k];
+  
+  		if (sum >= M) {
+  			ans = std::min(ans, mid);
+  			end = mid - 1;
+  		}
+  		else {
+  			begin = mid + 1;
+  		}
+  	}
+  	return ans;
+  }
+  
+  int main() {
+  	scanf("%d %d", &N, &M);
+  	entrance.assign(N, 0);
+  	for (int k = 0; k < N; k++) {
+  		scanf("%d", &entrance[k]);
+  	}
+  	std::sort(entrance.begin(), entrance.end());
+  	printf("%lli", calculate());
+  }
+  ```
+
+  
+
+#### 125. 이분탐색은 std::lower_bound를 사용해 풀 수 있는 문제도 이분 탐색에 포함된다.
+
+- 이분탐색에 왜 lower_bound랑 연관있느냐를 의문에 가지겠지만 std의 lower_bound는 내부 코드가 이분탐색을 통해 가장 해당 인덱스보다 크거나 같은 값의 인덱스를 반환하는 식으로 구성되어 있다.(std::sort가 quicksort이듯이)
+
+```c++
+//개똥 벌레 문제도 다음과 같은 원리로 진행된다.
+#pragma warning (disable:4996)
+#include <iostream>
+#include <vector>
+#include <limits.h>
+#include <algorithm>
+
+std::vector<int> top;
+std::vector<int> bottom;
+int N, H;
+
+std::pair<int,int> calculate() {
+	int ans = INT_MAX;
+	int count = 0;
+	for (int k = 1; k <= H; k++) {
+		int bottom_value = std::distance(std::lower_bound(bottom.begin(), bottom.end(), k), bottom.end());
+		int top_value = std::distance(std::lower_bound(top.begin(), top.end(), H - k + 1), top.end());
+		if (ans == bottom_value + top_value) count++;
+		else if (ans > bottom_value + top_value) {
+			ans = bottom_value + top_value;
+			count = 1;
+		}
+	}
+	return std::make_pair(ans, count);
+}
+
+int main() {
+	scanf("%d %d", &N, &H);
+	for (int k = 0; k < N; k++) {
+		int value;
+		scanf("%d", &value);
+		if (k % 2 == 0) bottom.emplace_back(value);
+		else top.emplace_back(value);
+	}
+	std::sort(top.begin(), top.end());
+	std::sort(bottom.begin(), bottom.end());
+	auto rst = calculate();
+
+	printf("%d %d", rst.first, rst.second);
+	
+}
+```
+
+
+
+#### 126. 
