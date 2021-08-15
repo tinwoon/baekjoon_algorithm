@@ -2110,4 +2110,56 @@ int main() {
 
 
 
-#### 126. 
+#### 126. Union-Find(분리 집합) 문제의 양식은 get_parent, union, find함수 세가지로 구성된다.
+
+> Union-Find는 서로다른 두 노드 a,b를 골랐을 때 해당 노드가 서로 같은 그래프 내에 속하는지 반환하는(find함수), 그리고 서로다른 두 노드 a,b가 속하는 그래프를 합하는(union함수), 그리고  한 노드의 부모 노드가 무엇인지를 반환하는 (get_parent함수)로 구성되어 있다.
+
+```c++
+#include <iostream>
+#include <vector>
+
+int N, M;
+std::vector<int> parent;
+
+
+int get_parent(int value) {
+	if (parent[value] == value) return value;
+    //해당 구문에서 return get_parent(parent[value]);만 해도 물론 답은 나온다.
+    //하지만 단순히 return만 한다면 1 -> 2 -> 3 -> 4로 구성된 노드에서 get_parent(4)를 호출할때마다 4 3 2 1을 계속 타고가야한다.
+    //반면에 parent[value]깂을 최적화하여 저장해둔다면 처음 get_parent(4)를 호출할 때는 4,3,2,1을 타지만 그 이후에 다시 get_parent(4)를 호출할 때는 한번에 1을 탐색하고 종료할 수 있다.
+	else return parent[value] = get_parent(parent[value]);
+}
+
+bool find(int a, int b) {
+	a = get_parent(a);
+	b = get_parent(b);
+	if (a == b) return true;
+	else return false;
+}
+//root노드의 기준은 같은 그래프 내에서 가장 작은 num을 갖는 노드를 의미한다.
+//1,2,3번 노드가 있으면 1번이 가장 작은 num이므로 1이 root 노드이다.
+void union_n(int a, int b) {
+	a = get_parent(a);
+	b = get_parent(b);
+	if (a < b) parent[b] = a;
+	else parent[a] = b;
+}
+
+int main() {
+	scanf("%d %d", &N, &M);
+	parent.assign(N + 1, 0);
+	for (int k = 0; k < parent.size(); k++) {
+		parent[k] = k;
+	}
+	for (int k = 0; k < M; k++) {
+		int cmd, a, b;
+		scanf("%d %d %d", &cmd, &a, &b);
+		if (cmd == 0) {
+			union_n(a, b);
+		}
+		else if (find(a, b)) printf("YES\n");
+		else printf("NO\n");
+	}
+}
+```
+
