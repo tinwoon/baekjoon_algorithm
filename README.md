@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                        
+>    	                           
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                            
+>                               
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2182,3 +2182,91 @@ int main() {
 - 예를 들어서 이제까지 50시간동안 진행하는 회의실 인구의 최댓값이 60인 상태에서 내가 어떤 회의실을 쓸지 말지 고르려고한다.
 - 고르려는 회의실의 끝낼 시간이 100이고 시작시간이 60이며 사람이 20이라면 시작시간인 60보다 먼저끝나는 회의실 중 에서 최댓값을 찾으면 된다.
 - 위에서는 50시간에 끝나는 60이 최댓값이므로 60 + 20 = 80이 dp값이 된다. 이를 반복하면 풀 수 있다.
+
+
+
+
+
+#### 129. 세그먼트 트리는 다음과 같은 원리로 동작한다.
+
+>1. make_tree
+>
+>```c++
+>//node 번호는 1번부터 시작한다.
+>//두가지의 경우의 수로 나뉘어진다.
+>//1. 범위에 속하는 값이 한개인 경우(start == end)
+>//2. 범위에 속하는 값이 두개 이상인 경우
+>long long init(int node, int start, int end) {
+>	if (start == end) return tree[node] = ~~~~~
+>	else return tree[node] = ~~~~~
+>}
+>```
+>
+>2. find_node
+>
+>```c++
+>//세가지의 경우에 수가 있다.
+>//1. start, end의 범위가 원하는 범위에 모두 속하지 않을 경우 ( if (start > right || end < left) )
+>//2. start, end의 범위가 모두 원하는 범위에 속할 경우 (if (left <= start && right >= end))
+>//3. start, end의 범위가 일부 범위에 걸치는 경우 ( else )
+>long long sum(int node, int start, int end, int left, int right) {
+>	if (start > right || end < left) return ~~;
+>	if (left <= start && right >= end) return tree[node];
+>	else {
+>		int mid = (start + end) / 2;
+>		return (sum(node * 2, start, mid, left, right) ~~ sum(node * 2 + 1, mid + 1, end, left, right));
+>	}
+>}
+>```
+
+
+
+#### 130. 세그먼트 트리와 다르게 펜윅트리는 구간합을 다음과 같은 특징으로 좀 더 빠르게 구할 수 있다.
+
+> 기존의 세그먼트 트리의 경우 분할 정복의 개념으로서 중간인 mid를 기준으로 반씩 나누어 저장하면서 기록을 했다.
+>
+> 하지만 펜윅트리는 단순의 반씩 나누는 값을 모두 저장하는게 아닌 특정 값을 기준으로 일부분 만 최대한 저장하면서 모든 값을 찾을 수 있도록 구현했다.
+>
+> https://www.youtube.com/watch?v=fg2iGP4e2mc
+
+```c++
+//n번의 segment prefix를 구하는 함수
+void set_tree() {
+	
+	for (long long index = 1; index <= N; index++) {
+		long long sum_v = 0;
+		for (long long k = index; k >= index - (index & -(1 * index)) + 1; k--) {
+			sum_v += data[k];
+		}
+		prefix[index] = sum_v;
+	}
+	
+}
+//update의 경우 index에 현재 인덱스의 보수를 &연산한 것을 더해준다.
+void change_prefix(long long b, long long c) {
+	long long index = (long long)b;
+	while (index <= N) {
+		prefix[index] = prefix[index] - data[b] + c;
+		index += (index & (-1 * index));
+	}
+	data[b] = c;
+}
+
+//출력의 경우 index에 현재 인덱스의 보수를 &연산한 것을 빼주며 진행한다.
+void print_prefix(long long b, long long c) {
+	long long index = (long long) b - 1;
+	long long first = 0;
+	long long second = 0;
+	while (index >= 1) {
+		first += prefix[index];
+		index -= (index & (-1 * index));
+	}
+	index = c;
+	while (index >= 1) {
+		second += prefix[index];
+		index -= (index & (-1 * index));
+	}
+	printf("%lld\n", second - first);
+}
+```
+
