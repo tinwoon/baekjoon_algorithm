@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                           
+>    	                              
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                               
+>                                  
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2187,22 +2187,39 @@ int main() {
 
 
 
-#### 129. 세그먼트 트리는 다음과 같은 원리로 동작한다.
+#### 129. 세그먼트 트리는 다음과 같은 원리로 동작한다.(구간합)
 
 >1. make_tree
 >
 >```c++
 >//node 번호는 1번부터 시작한다.
 >//두가지의 경우의 수로 나뉘어진다.
->//1. 범위에 속하는 값이 한개인 경우(start == end)
->//2. 범위에 속하는 값이 두개 이상인 경우
+>//1. 리프노드인 경우(start == end)
+>//2. 리프노드가 아닌 경우
 >long long init(int node, int start, int end) {
 >	if (start == end) return tree[node] = ~~~~~
 >	else return tree[node] = ~~~~~
 >}
 >```
 >
->2. find_node
+>2. update
+>
+>```c
+>// update도 마찬가지로 1번부터 시작해서 세가지의 경우의 수로 나뉘어 진다.
+>//1, 범위를 벗어난 경우
+>//2. 리프노드인 경우
+>//3. 리프노드가 아닌 경우
+>long long update(int node, int start, int end, int index, int diff){
+>    if(index < start || index > end) return tree[node];
+>    if(start == end) return tree[node] += diff;
+>    int mid = (start + end)/2;
+>    return tree[node] = update(node * 2, start, mid, index, diff) + update(node * 2+1, mid+1, end, index, diff);
+>}
+>```
+>
+>
+>
+>3. find_node
 >
 >```c++
 >//세가지의 경우에 수가 있다.
@@ -2210,11 +2227,11 @@ int main() {
 >//2. start, end의 범위가 모두 원하는 범위에 속할 경우 (if (left <= start && right >= end))
 >//3. start, end의 범위가 일부 범위에 걸치는 경우 ( else )
 >long long sum(int node, int start, int end, int left, int right) {
->	if (start > right || end < left) return ~~;
+>	if (start > right || end < left) return 0;
 >	if (left <= start && right >= end) return tree[node];
 >	else {
 >		int mid = (start + end) / 2;
->		return (sum(node * 2, start, mid, left, right) ~~ sum(node * 2 + 1, mid + 1, end, left, right));
+>		return (sum(node * 2, start, mid, left, right) + sum(node * 2 + 1, mid + 1, end, left, right));
 >	}
 >}
 >```
