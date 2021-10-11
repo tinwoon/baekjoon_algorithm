@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                              
+>    	                                 
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                  
+>                                     
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2286,4 +2286,13 @@ void print_prefix(long long b, long long c) {
 	printf("%lld\n", second - first);
 }
 ```
+
+
+
+#### 131. inversion counting 문제는 전형적인 세그먼트 트리 문제이다.(https://steady-coding.tistory.com/137)
+
+> - x1 < x2 이면서 arr[x1] > arr[x2] 의 개수를 확인하는 문제이다.
+> - 교차점 문제와 같은 문제이다.
+> - x축을 오름차순으로 정렬한다면 교차점이 되기 위해서는 현재 x_present 에서 arr[x_present]의 위치를 찾았을 때 arr[x_present] 이후에 방문된 점의 개수를 알면 된다. (교차가 된다는 거는 비교대상보다 x는 이전보다 크고, arr은 이전보다 커야만 교차가 된다. 즉, 어차피 x는 정렬되어서 탐색하기 때문에 x_present 이전 x_prev보다 항상 크며, arr[x_present]이후의 arr축 이 방문되어 있다는 것은 이미 현재 x_present보다 작았던  x_prev의 arr[x_prev] > arr[x_present]인 값을 찾으면 됨으로  arr[x_present] + 1 ~ arr[n] 범위까지 중 방문되어 있는 node의 수가 교차점의 개수임을 알 수 있다.)
+> - 즉, x 축과 arr의 길이가 n이라면 x_present를 1~k까지 늘리면서 visited[arr[x_present] + 1 ~ arr[n]까지] 를 ans에 계속해서 더해가면 풀 수 있다.
 
