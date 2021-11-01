@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                 
+>    	                                    
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                     
+>                                        
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2296,3 +2296,56 @@ void print_prefix(long long b, long long c) {
 > - x축을 오름차순으로 정렬한다면 교차점이 되기 위해서는 현재 x_present 에서 arr[x_present]의 위치를 찾았을 때 arr[x_present] 이후에 방문된 점의 개수를 알면 된다. (교차가 된다는 거는 비교대상보다 x는 이전보다 크고, arr은 이전보다 커야만 교차가 된다. 즉, 어차피 x는 정렬되어서 탐색하기 때문에 x_present 이전 x_prev보다 항상 크며, arr[x_present]이후의 arr축 이 방문되어 있다는 것은 이미 현재 x_present보다 작았던  x_prev의 arr[x_prev] > arr[x_present]인 값을 찾으면 됨으로  arr[x_present] + 1 ~ arr[n] 범위까지 중 방문되어 있는 node의 수가 교차점의 개수임을 알 수 있다.)
 > - 즉, x 축과 arr의 길이가 n이라면 x_present를 1~k까지 늘리면서 visited[arr[x_present] + 1 ~ arr[n]까지] 를 ans에 계속해서 더해가면 풀 수 있다.
 
+
+
+#### 132. SPFA는 벨만포드 알고리즘의 단점을 개선한 내용이다.
+
+> 만약 from -> to 로 가는 최단 경로를 a라고 하고, 나머지 b, c, d를 최단 경로가 아닌 경로라고 할때 
+>
+> b , c, d의 경로가 있어도 a의 경로는 이미 최단 경로이기 때문에 변경되지 않는다.
+>
+> 이를 계기로 to -> next_to로 가는 경로의 최단 경로도 이미 a가 변경되지 않으면 변경할지 확인할 필요가 없다.
+>
+> - 즉, 벨만포드의 경우 a가 변경되는 말든 일단 확인하지만 Shotest Path Faster Algorithm의 경우 a가 변경되지 않으면 다음 노드에 넣지 않고, 변경되면 queue에 넣어서 최적화하는 방법이다. 
+
+
+
+
+
+1. 바뀐 정점은 큐를 이용해서 관리하고
+
+2. 큐에 들어가 있는지, 안들어가있는지를 배열을 이용해서 체크한다.
+
+3. 초기화를 하고, 큐에 시작점을 넣어준다.
+
+   ```c++
+   for(int i=1; i<=n; i++){
+       d[i] = inf;
+   }
+   
+   d[1] = 0;
+   queue<int> q;  
+   q.push(1);
+   //c는 queue에 들어있나 아닌가의 여부이다.
+   c[1] = true;
+   
+   while(!q.empty()){
+       int from = q.front();
+       //c는 queue에 들어있나 아닌가의 여부이므로 나오면 false를 해준다.
+       c[from] = false;
+       q.pop();
+       
+       for(Edge &e : a[from]){
+           int to = e.to, cost = e.cost;
+           if(d[to] > d[from] + cost){
+               d[to] = d[from] + cost;
+               if(c[to] == false){
+                   q.push(to);
+                   c[to] = true;
+               }
+           }
+       }
+   }
+   ```
+
+   - 하지만, 결과적으로 조금 빠른 벨만포드 알고리즘이랑 다를바가 없으므로, 다익스트라보단 당연히 느리지만, 음수 가중치를 쓸 때 중에 벨만포드보다 빠르게 풀고 싶다면 주로 사용한다. (MCMF 알고리즘 같은 경우)
