@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                    
+>    	                                       
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                        
+>                                           
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2349,3 +2349,22 @@ void print_prefix(long long b, long long c) {
    ```
 
    - 하지만, 결과적으로 조금 빠른 벨만포드 알고리즘이랑 다를바가 없으므로, 다익스트라보단 당연히 느리지만, 음수 가중치를 쓸 때 중에 벨만포드보다 빠르게 풀고 싶다면 주로 사용한다. (MCMF 알고리즘 같은 경우)
+
+#### 134. 인접행렬의 N 제곱은 도로를 N개 거쳐서 가는 경우의 수를 의미한다.
+
+> - 보통의 `A[i][j]`의 의미는 i에서 j를 거쳐서 가는 도로의 개수를 의미한다. (아래 그림과 같다)
+>
+> ![image-20211128164714188](C:\Users\Hello\AppData\Roaming\Typora\typora-user-images\image-20211128164714188.png)
+>
+> - 이를 조금 더 간단하게 다음과 같이 간략히 나타내자
+>
+>   ![image-20211128164822817](C:\Users\Hello\AppData\Roaming\Typora\typora-user-images\image-20211128164822817.png)
+>
+> - 여기서 행렬을 제곱하면 다음과 같은 식으로 귀결된다는 것을 알 수 있다.
+>
+>   ![image-20211128164919890](C:\Users\Hello\AppData\Roaming\Typora\typora-user-images\image-20211128164919890.png)
+>
+> - 즉, 1행 1열을 예로 들면 (AA) = (AA)(AA) + (AB)(BA) + (AC)(CA) 이다. 해당 의미는 A에서 A를 거쳐 A로 도착하는 경우 + A에서 B를 거쳐 A로 도착하는 경우 + A에서 C를 거쳐 A에 도착하는 경우의 수를 의미한다.
+>
+> - 결국 A^2의 의미는 **도로를 두 개 사용**해서 도착하는 경우를 의미한다.
+
