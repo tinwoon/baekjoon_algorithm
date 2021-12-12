@@ -3,6 +3,10 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include <numeric>
+
+//16987 계란으로 계란치기 
+//dfs를 통한 백트래킹
 
 int N, S, W;
 //S, W
@@ -10,29 +14,34 @@ int N, S, W;
 std::vector< std::pair<int, int> > data;
 int ans = 0;
 
-int ret() {
-	std::pair<int, int> hand = data[0];
-	int index = 1;
+void dfs(int hand_index, int destroy) {
 
-	int hand_s = hand.first;
-	int hand_w = hand.second;
+	ans = std::max(ans, destroy);
 
-	int index_s = data[index].first;
-	int index_w = data[index].second;
+	//더 이상 들게 없거나, 모든 계란이 파괴됐으면 종료한다.
+	if (hand_index == N || destroy == N) return;
 
-	while (1) {
-		int hit_hand_s = hand_s - index_w;
-		int hit_index_s = index_s - hand_s;
-
-		if (hit_hand_s)
+	if (data[hand_index].first <= 0) {
+		dfs(hand_index + 1, destroy);
+		return;
 	}
+
+	for (int k = 0; k < N; k++) {
+		if (hand_index == k || data[k].first <= 0) continue;
+
+		data[hand_index].first -= data[k].second;
+		data[k].first -= data[hand_index].second;
+		int destroy_p = 0;
+		if (data[hand_index].first <= 0) destroy_p++;
+		if (data[k].first <= 0) destroy_p++;
+
+		dfs(hand_index + 1, destroy + destroy_p);
+		data[hand_index].first += data[k].second;
+		data[k].first += data[hand_index].second;
+	}
+
 }
 
-void calculate() {
-	do {
-
-	} while (std::next_permutation(data.begin(), data.end()));
-}
 
 int main() {
 	scanf("%d", &N);
@@ -42,6 +51,7 @@ int main() {
 		data.emplace_back(std::make_pair(S, W));
 	}
 
-	std::sort(data.begin(), data.end());
+	dfs(0, 0);
+	printf("%d", ans);
 
 }
