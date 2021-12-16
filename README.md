@@ -2368,3 +2368,5 @@ void print_prefix(long long b, long long c) {
 >
 > - 결국 A^2의 의미는 **도로를 두 개 사용**해서 도착하는 경우를 의미한다.
 
+#### 135. map에서 정의되지 않은 key 값 참조를 방지하기 위해 count를 참조하는데 해당 알고리즘은 key가 있으면 1, 없으면 0이다. (말만 count지 결국은 true, false 개념)
+
