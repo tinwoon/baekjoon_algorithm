@@ -2,141 +2,135 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <deque>
 #include <string>
+#include <deque>
 #include <stack>
 
-//백준 3111 검열 문제
-// 문제 풀이 방식을 아래와 같이 변경해야할 듯 => 모두 삭제하던가 일부 활용해서 아래코드 싹다 수정해야함
-// 1.첫번째로 store_front에는 A의 맨 마지막 문자가 나올 때 까지 넣고(3번예시에선 banana의 a), store_back에는 나머지 T 모두 넣기 (맨 초기 초기화)
-// 2.dequeue에 store_front에 A의 맨 첫번째 글자가 나올때까지 push_front하기
-// 3.맨 첫번째 글자가 나왔으면 글자 A와 일치하는지 deququ의 앞부터 확인해보기(하나 맞았으면 dequeue에서 삭제시키고, 다시 반복해서 안맞을 때 까지)
-// 4.안맞았으면 3번을 다시 반복(store_front가 empty일 때 까지)
-// 5.stack_front가 empty가 됐으면, 반대로 dequeue에 store_back에서 A의 맨 마지막 글자가 나올떄까지 push_back하기.
-// 6.맨 마지막 글자가 나왔으면 글자 A와 일치하는지 dequeue의 뒤부터 확인 (하나 맞으면 dequeue에서 삭제시키고, 다시 반복해서 안맞을 때까지)
-// 7. 안맞았으면 위의 5번 반복(store_back이 empty일떄 까지)
-// 8.모두 다했으면 dequeue 프린트하면 된다.
+//3111 검열 문제
+//일주일의 고민 끝에 해결한 문제
+// dq 안에 T의 문자를 넣고 stack_front에 앞에서 부터 찾고
+// stack_back에 뒤에서 부터 T를 찾으면서 문제를 해결함 
 
-std::string T;
 std::string A;
-
+std::string T;
 std::deque<char> dq;
 
-bool is_equal_front(std::stack<char>& store_front) {
+//앞에서 찾았으면 true return;
+bool find_front(std::stack<char> &stack_front, std::stack<char> &stack_back) {
+	std::stack<char> cnfrm;
 
-	int index_size = A.size();
-	if (store_front.size() < index_size) return false;
-
-	bool ret = true;
-	std::stack<char> equal_A;
-
-	for (int k = index_size - 1; k >= 0; k--) {
-		if (store_front.top() == A[k]) {
-			equal_A.emplace(A[k]);
-			store_front.pop();
+	//dq가 비어있으면 안된다.
+	while (!dq.empty() || !stack_back.empty()) {
+		//먼저 stack_front에 값을 넣는다.
+		//만약 dq에 값이 있으면 dq에서 빼오고
+		if (!dq.empty()) {
+			stack_front.emplace(dq.front());
+			dq.pop_front();
 		}
+		//dq에 값이 없으면 stack_back에서 빼온다.
 		else {
-			while (!equal_A.empty()) {
-				store_front.emplace(equal_A.top());
-				equal_A.pop();
+			stack_front.emplace(stack_back.top());
+			stack_back.pop();
+		}
+		//A와 같은지 비교하기 위해서
+		if (stack_front.size() >= A.size() && stack_front.top() == A.back()) {
+			bool flag = true;
+			for (int k = A.size() - 1; k >= 0; k--) {
+				if (stack_front.top() == A[k]) {
+					cnfrm.emplace(stack_front.top());
+					stack_front.pop();
+				}
+				else {
+					flag = false;
+					while (!cnfrm.empty()) {
+						stack_front.emplace(cnfrm.top());
+						cnfrm.pop();
+					}
+					break;
+				}
 			}
-			ret = false;
-			break;
+			if (flag) {
+				while (!cnfrm.empty()) cnfrm.pop();
+				return true;
+			}
 		}
 	}
 
-	return ret;
+	return false;
 }
 
+bool find_back(std::stack<char> &stack_back, std::stack<char> &stack_front) {
+	std::stack<char> cnfrm;
 
-bool is_equal_back(std::stack<char>& store_back) {
-
-	int index_size = A.size();
-	if (store_back.size() < index_size) return false;
-
-	bool ret = true;
-	std::stack<char> equal_A;
-
-	for (int k = 0; k < index_size; k++) {
-		if (store_back.top() == A[k]) {
-			equal_A.emplace(A[k]);
-			store_back.pop();
+	//dq가 비어있으면 안된다.
+	while (!dq.empty() || !stack_front.empty()) {
+		//먼저 stack_front에 값을 넣는다.
+		//만약 dq에 값이 있으면 dq에서 빼오고
+		if (!dq.empty()) {
+			stack_back.emplace(dq.back());
+			dq.pop_back();
 		}
+		//dq에 값이 없으면 stack_front에서 빼온다.
 		else {
-			while (!equal_A.empty()) {
-				store_back.emplace(equal_A.top());
-				equal_A.pop();
+			stack_back.emplace(stack_front.top());
+			stack_front.pop();
+		}
+		//A와 같은지 비교하기 위해서
+		if (stack_back.size() >= A.size() && stack_back.top() == A.front()) {
+			bool flag = true;
+			for (int k = 0; k < A.size(); k++) {
+				if (stack_back.top() == A[k]) {
+					cnfrm.emplace(stack_back.top());
+					stack_back.pop();
+				}
+				else {
+					flag = false;
+					while (!cnfrm.empty()) {
+						stack_back.emplace(cnfrm.top());
+						cnfrm.pop();
+					}
+					break;
+				}
 			}
-			ret = false;
-			break;
+			if (flag) {
+				while (!cnfrm.empty()) cnfrm.pop();
+				return true;
+			}
 		}
 	}
 
-	return ret;
+	return false;
 }
-
 
 void calculate() {
+	std::stack<char> stack_front;
+	std::stack<char> stack_back;
 
-	std::stack<char> store_front;
-	std::stack<char> store_back;
-	bool dq_empty_flag = false;
-
-	while (!dq_empty_flag) {
-
-		do {
-			if (dq.empty()) {
-				dq_empty_flag = true;
-				break;
-			}
-			//앞의 부분이 같은지 비교
-			do {
-				store_front.emplace(dq.front());
-				dq.pop_front();
-				if (dq.empty()) dq_empty_flag = true;
-			} while (store_front.top() != A.back() && !dq_empty_flag);
-		} while (!dq_empty_flag && !is_equal_front(store_front));
-
-
-		do {
-			if (dq.empty()) {
-				dq_empty_flag = true;
-				break;
-			}
-			//뒤의 부분이 같은지 비교
-			do {
-				store_back.emplace(dq.back());
-				dq.pop_back();
-				if (dq.empty()) dq_empty_flag = true;
-			} while (store_back.top() != A.front() && !dq_empty_flag);
-		} while (!dq_empty_flag && !is_equal_back(store_back));
-
-
+	while (1) {
+		if (!find_front(stack_front, stack_back)) break;
+		if (!find_back(stack_back, stack_front)) break;
 	}
-
-	std::deque<char> ans;
-
-	while (!store_front.empty()) {
-		ans.emplace_front(store_front.top());
-		store_front.pop();
+	
+	while (!stack_front.empty()) {
+		dq.emplace_front(stack_front.top());
+		stack_front.pop();
 	}
-	while (!store_back.empty()) {
-		ans.emplace_back(store_back.top());
-		store_back.pop();
-	}
-
-	while (!ans.empty()) {
-		printf("%1c", ans.front());
-		ans.pop_front();
+	while (!stack_back.empty()) {
+		dq.emplace_back(stack_back.top());
+		stack_back.pop();
 	}
 }
 
 int main() {
 	std::cin >> A;
 	std::cin >> T;
-
+	
 	for (int k = 0; k < T.size(); k++) {
 		dq.emplace_back(T[k]);
 	}
 	calculate();
+	while (!dq.empty()) {
+		printf("%1c", dq.front());
+		dq.pop_front();
+	}
 }
