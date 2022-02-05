@@ -70,3 +70,46 @@ int main()
 
 #### 3. [scanf시 "%c"의 경우만 \n 버퍼처리 관리가 필요하다.][https://dojang.io/mod/page/view.php?id=638]
 
+
+
+#### 4. Const의 경우 포인터는 생성과 동시에 초기화 하지 않아도 된다.
+
+```c
+typedef struct Stag_J1939Rm_ChannelType
+{
+	uint16_t* pAckTxTimeoutCounter;
+	uint8_t* pAckTxpendingFlag;
+	
+	const uint8_t ddComMNtwrkHandleId;
+	const uint16_t ddPduRackTxId;
+	const uint8_t ucAckQueuesize;
+	const uint8_t ucAckTxPendingMask;
+	const uint8_t ucAckQueueInfoAccessIndex;
+	const uint8_t ddAckTxPduId;
+	const uint8_t ucAckTxPduIndex;
+}J1939Rm_ChannelType;
+
+int main() {
+	
+	uint8_t data = 10;
+	uint8_t data2 = 20;
+    //const int data3; => int형의 경우는 생성과 동시에 초기화가 일어나야하기 때문에 에러 발생한다.
+    //아래의 포인터의 경우에는 생성과 동시에 초기화가 일어나지 않아도 되기 때문에 에러 발생하지 않는다.
+	const uint8_t* value;
+
+    //구조체 포인터의 경우에도 마찬가지이다.
+	const J1939Rm_ChannelType* LpChannel;
+
+	LpChannel = &J1939Rm_GaaChannel[0];
+
+	value = &data;
+	printf("%d\n", *value);
+	value = &data2;
+	printf("%d\n", *value);
+    //const 타입을 값의 변경에 대해 차단했기 때문에 아래의 경우 오류 발생한다.
+	*value = 19;
+
+	
+}
+```
+
