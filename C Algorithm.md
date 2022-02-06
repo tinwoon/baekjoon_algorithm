@@ -72,7 +72,7 @@ int main()
 
 
 
-#### 4. Const의 경우 포인터는 생성과 동시에 초기화 하지 않아도 된다.
+#### 4. Const의 경우 포인터는 생성과 동시에 초기화 하지 않아도 된다. (컴파일 에러는 안나는데 접근 자체는)
 
 ```c
 typedef struct Stag_J1939Rm_ChannelType
@@ -95,6 +95,7 @@ int main() {
 	uint8_t data2 = 20;
     //const int data3; => int형의 경우는 생성과 동시에 초기화가 일어나야하기 때문에 에러 발생한다.
     //아래의 포인터의 경우에는 생성과 동시에 초기화가 일어나지 않아도 되기 때문에 에러 발생하지 않는다.
+    //근데 포인터라 초기화 안해주면 nullptr 참조할 수 밖에 없으므로 초기화는 const든 아니든 뒤에 해줘야한다.
 	const uint8_t* value;
 
     //구조체 포인터의 경우에도 마찬가지이다.
@@ -113,3 +114,83 @@ int main() {
 }
 ```
 
+
+
+#### 5. Const의 고찰
+
+```c
+#pragma warning (disable : 4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#define J1939RM_INVALID 0xFF
+#define J1939RM_CONF_TIMEOUT_COUNT 200
+uint8_t g_data = 15;
+uint8_t g_data_c = 16;
+
+typedef struct Stag_J1939Rm_ChannelType
+{
+	uint16_t* pAckTxTimeoutCounter;
+	uint8_t* pAckTxpendingFlag;
+	
+	const uint8_t ddComMNtwrkHandleId;
+	const uint16_t ddPduRackTxId;
+	const uint8_t ucAckQueuesize;
+	const uint8_t ucAckTxPendingMask;
+	const uint8_t ucAckQueueInfoAccessIndex;
+	const uint8_t ddAckTxPduId;
+	const uint8_t ucAckTxPduIndex;
+}J1939Rm_ChannelType;
+
+const J1939Rm_ChannelType J1939Rm_GaaChannel[] = {
+	{
+		nullptr,
+		&g_data,
+		0,
+		J1939RM_INVALID,
+		0x01,
+		0x01,
+		0x00,
+		J1939RM_INVALID,
+		J1939RM_INVALID
+	}
+};
+
+
+
+int main() {
+    
+	const J1939Rm_ChannelType* LpChannel;
+	uint8_t* LpAckTxPendingFlag;
+
+	LpChannel = &J1939Rm_GaaChannel[0];
+
+
+	LpAckTxPendingFlag = LpChannel->pAckTxpendingFlag;
+
+	*(LpChannel->pAckTxpendingFlag) = g_data;
+    
+    //출력 : 15
+    printf("출력 : %d", *(LpChannel->pAckTxpendingFlag));
+
+}
+```
+
+- `LpAckTxPendingFlag = LpChannel->pAckTxpendingFlag; *(LpChannel->pAckTxpendingFlag) = (uint8_t)0x01;`이 가능한가?
+
+  > 가능하다.
+  >
+  > 코드를 보면 `const J1939Rm_ChannelType* LpChannel;`의 경우 LpChannel의 내부 값을 변동할 수 없음만을 의미한다.
+  >
+  > 즉, `const int* Lpchannel`이라고 선언됐다면 Lpchannel의 값이 가리키는 값을 변경할 수 없다는 의미이므로,
+  >
+  >  `const J1939Rm_ChannelType* LpChannel;`의 경우는 Lpchannel-> ~ 등의 값을 변경할 수 없다는 의미이다.
+  >
+  > 
+  >
+  > 하지만 Lpchannel의 `uint8_t* pAckTxpendingFlag;`의 경우는 `const uint8_t* pAckTxpendingFlag`이 아니기 때문에 주소가 가리키는 값의 대입은 변화가 가능하다. 
+  >
+  > 
+  >
+  > 정리하면 `Lpchannel-> pAckTxpendingFlag = &g_data`는 불가능하지만, `*(Lpchannel-> pAckTxpendingFlag) = g_data`는 가능하다.
