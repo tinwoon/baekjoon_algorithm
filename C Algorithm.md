@@ -185,7 +185,7 @@ int main() {
   >
   > 즉, `const int* Lpchannel`이라고 선언됐다면 Lpchannel의 값이 가리키는 값을 변경할 수 없다는 의미이므로,
   >
-  >  `const J1939Rm_ChannelType* LpChannel;`의 경우는 Lpchannel-> ~ 등의 값을 변경할 수 없다는 의미이다.
+  > `const J1939Rm_ChannelType* LpChannel;`의 경우는 Lpchannel-> ~ 등의 값을 변경할 수 없다는 의미이다.
   >
   > 
   >
@@ -194,3 +194,47 @@ int main() {
   > 
   >
   > 정리하면 `Lpchannel-> pAckTxpendingFlag = &g_data`는 불가능하지만, `*(Lpchannel-> pAckTxpendingFlag) = g_data`는 가능하다.
+
+
+
+#### 6. 함수 포인터의 경우 Return type을 void로 변경할 수 있다.(https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=shup77&logNo=221648877396) => 이 블로그의 경우 정리 자체가 가로가 빠진게 많고 안되는게 맞는 것도 있다. 따라서 아래 코드가 완벽하게 잘 동작하는 코드이다.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+void First(void);
+
+int Second(int n);
+
+
+
+int main(void) {
+
+    void (*func1) (void);
+
+    void (*func2) (int);
+
+
+
+    func1 = (void (*) (void)) Second;
+
+    printf("반환 : %d\n", ((int (*)(int)) func1)(123));
+
+
+    func2 = ( void (*)(int) )First;
+
+    func2(2);
+
+}
+
+void First() {
+    printf("매개변수는 모르겠고, First는 출력합니다");
+    return;
+}
+
+int Second(int n) {
+    return n;
+}
+```
+
