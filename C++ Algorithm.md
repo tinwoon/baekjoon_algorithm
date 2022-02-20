@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                          
+>    	                                             
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                              
+>                                                 
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2389,3 +2389,37 @@ void print_prefix(long long b, long long c) {
 > - 위 코드에 해당하는 복잡도는 N*1000에 해당하며, 생성된 배열을 0으로 초기화하는 내역까지 복잡도에 포함시켜야 함으로 주의할 필요가 있다.
 > - 이럴 경우 MAP을 통해 필요한 데이터만 생성시키는 내역을 작성하는게 큰 팁
 
+
+
+#### 137. KMP의 getPi의 경우 다음과 같은 원리로 동작된다.(https://bowbowbow.tistory.com/6)
+
+- getpi는 pi[] 배열에 접두사 접미사를 조사하여 넣어주는 함수이다.
+
+> getpi 역시도 접두사와 접미사를 기반으로 pi[]을 생성하여 인덱스로 접근한다.
+>
+> pi 배열은 S라는 문자열의 0번부터 S의 총 길이까지의 문자중 접두사 접미사가 같은 단어의 길이를 의미한다.
+>
+> ![image](https://user-images.githubusercontent.com/18729679/154838734-55724faa-f5c7-4c0d-9474-74a93bcf3b8a.png)
+>
+> 이때 가운데의 값은 중복되어 계산되어 진다.
+>
+> ex) `abcabcabc`의 경우 `abcabc`, `abcabc` 두가지로 총 pi[8]은 6이 된다.
+
+- 코드는 아래와 같다.
+
+  ```c
+  void get_pi(int size) {
+  	for (int i = 1; i < size; i++) {
+  		while (j > 0 && c_s[i] != c_s[j]) {
+              //왜 pi[j-1]이냐면 위에 abcabcabc 처럼 이제까지 접두사 안에서도 접두사와 접미사로 나뉘어져 둘이 같을 수가 있다.
+              //따라서 구한 접두사의 접미사까지가 일치 하지 않아 구한 접두사의 접두사로 접근하기 위해 pi[j-1]을 대입한다.
+              //워낙 어려울 수 있지만 곰곰히 생각해보면 어느 순간 알 수 있다.
+              //이것만 이해하는데 3일 걸렸다. 편안하게 생각해보기
+  			j = pi[j - 1];
+  		}
+  		if (c_s[i] == c_s[j]) pi[i] = ++j;
+  	}
+  }
+  ```
+
+  
