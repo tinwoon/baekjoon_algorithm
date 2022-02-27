@@ -28,7 +28,7 @@ int main() {
 
 
 
-#### 2. C언어에서도 qsort를 제공해준다.
+#### 2. C언어에서도 qsort를 제공해준다.(bsearch도 제공한다.)
 
 ```c
 #include <stdio.h>
@@ -240,5 +240,32 @@ int Second(int n) {
 
 
 
-#### 특정 메소드만 변경 시 다음과 같은 내용을 진행할 수 있다.
+#### string 배열을 malloc으로 처리하고 싶을 때(1차만 처리하고 싶을때) 다음과 같이 처리할 수 있다.([혼자 연구하는 C/C++ by WinApi (soen.kr)](http://soen.kr/lecture/ccpp/cpp1/11-3-5.htm))
+
+```c
+void main()
+
+{
+
+     int i;
+
+ 
+
+     char (*p)[4]=(char (*)[4])malloc(3*4*sizeof(char));
+
+     strcpy(p[0],"dog");
+
+     strcpy(p[1],"cow");
+
+     strcpy(p[2],"cat");
+
+     for (i=0;i<3;i++) puts(p[i]);
+
+     free(p);
+
+}
+
+```
+
+
 
