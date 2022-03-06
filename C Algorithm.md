@@ -287,3 +287,96 @@ void main()
 >
 > 출처: https://blockdmask.tistory.com/391 [개발자 지망생]
 
+#### const void* casting 방법 (qsort를 통한 compare를 기반으로)
+
+- `*(int*)a;` 이지 `(int*)*a`가 아니라는 것을 기억해야한다.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+// 오름차순으로 정렬할 때 사용하는 비교함수
+int static compare (const void* first, const void* second)
+{
+    if (*(int*)first > *(int*)second)
+        return 1;
+    else if (*(int*)first < *(int*)second)
+        return -1;
+    else
+        return 0;
+}
+
+int main()
+{
+    int arr[] = {32, 11, 97, 42, 21, 70, 56, 67, 88, 100};
+    int array_size = sizeof(arr) / sizeof(int);
+    int i;
+
+    // 정렬 전
+    for (i = 0; i < array_size; i++) printf("%d ", arr[i]);
+    printf("\n");
+
+    qsort(arr, array_size, sizeof(int), compare);
+
+    // 정렬 후
+    for (i = 0; i < array_size; i++) printf("%d ", arr[i]);
+    printf("\n");
+
+    return 0;
+}
+```
+
+
+
+#### Tree 할당 방법
+
+```c
+typedef struct _Tree_ {
+    int value = -1;
+	_Tree_* left = NULL;
+	_Tree_* right = NULL;
+}Tree;
+
+Tree* root;
+
+int main(){
+    root = (Tree*)malloc(sizeof(Tree));
+    Tree* node = (Tree*)malloc(sizeof(Tree));
+    root->right = node;
+}
+```
+
+
+
+#### malloc을 지역변수에 선언했다고 할당된 영역이 사라지는게 아니다.
+
+- 물론 지역 변수 내에서 Tree* node = (Tree*)malloc(sizeof(Tree)); 했다면 node 포인터는 사라지는게 맞다.
+- 하지만 malloc은 Tree에 대한 메모리를 할당하고 할당된 데이터의 주소를 반환하는 것이지 메모리가 free된게 아니다.
+- 따라서 아래와 같이 선언했다면 똑같이 right의 데이터에 접근이 가능하다.
+- 이 점을 꼭 기억해야한다.(이 내용을 모르면 미리 전역변수로 선언해서 초기화를 막아야한다 생각할 수 있다.)
+- malloc을 통해 선언된 내용은 함수를 통해 할당된 내역이므로 블록을 해제해도 사라지진 않는다.
+
+```c
+typedef struct _Tree_ {
+    int value = -1;
+	_Tree_* left = NULL;
+	_Tree_* right = NULL;
+}Tree;
+
+Tree* root;
+
+
+int main(){
+    root = (Tree*)malloc(sizeof(Tree));
+    if(1){
+    	Tree* node = (Tree*)malloc(sizeof(Tree));
+    	node -> value = 15;
+    	root->right = node;
+    }
+    printf("%d", root->right->value);
+    //15가 출력된다.
+}
+```
+
+
+
