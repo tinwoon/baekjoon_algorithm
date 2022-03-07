@@ -380,3 +380,29 @@ int main(){
 
 
 
+#### 포인터로 할당된 내역을 배열로 접근이 가능하며, 타입에 따라 해당 길이가 늘어 날 수 있다.
+
+```c
+#pragma warning (disable : 4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+uint32_t* metadata;
+
+int main() {
+	uint32_t md = 0xfff4fff0;
+	metadata = &md;
+
+	uint8_t* ptrMetadata = (uint8_t*)metadata;
+
+	printf("ptr : %x\n", ptrMetadata[0]); //f0 출력
+	printf("ptr : %x\n", ptrMetadata[1]); //ff 출력
+	printf("ptr : %x\n", ptrMetadata[2]); //f4 출력
+	printf("ptr : %x", ptrMetadata[3]); //ff 출력
+
+}
+```
+
+
+
