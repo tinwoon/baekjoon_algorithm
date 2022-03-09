@@ -406,3 +406,24 @@ int main() {
 
 
 
+#### 원칙적으로 구조체 선언 부분에서는 변수를 초기화할 수 없다!
+
+- 따라서 아래 코드의 경우 nullptr로 초기화되지 않는다.
+
+```c
+typedef struct _Tree_ {
+	_Tree_* left = nullptr;
+	_Tree_* right = nullptr;
+}Tree;
+```
+
+- 따라서 대부분의 경우 다음과 같이 함수로 만들어서 사용한다.
+
+```c
+Tree* init_node() {
+	Tree* node = (Tree*)malloc(sizeof(Tree));
+	node->right = node->left = nullptr;
+	return node;
+}
+```
+
