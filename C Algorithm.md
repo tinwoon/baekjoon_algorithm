@@ -427,3 +427,48 @@ Tree* init_node() {
 }
 ```
 
+
+
+#### Tree의 생성 및 삭제
+
+- Tree를 생성할 때 typedef으로 할 경우 `Tree* child[10];`이 아닌 `struct Tree* child[10];`으로 해줘야한다.
+
+```c
+typedef struct Tree {
+	struct Tree* child[10];
+}Tree;
+
+Tree* root;
+
+//Tree에 대한 초기화.
+Tree* init_tree() {
+	Tree* node = (Tree*)malloc(sizeof(Tree));
+	for (int k = 0; k < 10; k++) {
+		node->child[k] = NULL;
+	}
+	return node;
+}
+
+//Tree를 만드는 것 뿐만 아니라 만든 뒤에 만든 노드를 return해준다.
+Tree* make_tree(Tree* node, int num) {
+	if (node->child[num] == NULL)
+	{
+		Tree* make_node = init_tree();
+		node->child[num] = make_node;
+		return make_node;
+	}
+	else return node->child[num];
+}
+
+//재귀적으로 free할당 가능.
+void delete_Tree(Tree* rt) {
+	Tree* child[10];
+	for (int k = 0; k < 10; k++) {
+		child[k] = rt->child[k];
+		if (child[k] != NULL) delete_Tree(child[k]);
+	}
+	free(rt);
+	return;
+}
+```
+
