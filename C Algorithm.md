@@ -472,3 +472,23 @@ void delete_Tree(Tree* rt) {
 }
 ```
 
+
+
+#### 구조체 다음과 같이 생성과 동시에 초기화 가능
+
+```c
+typedef struct _pair_{
+    int first;
+    int second;
+}pair;
+
+void print_v(pair v){
+    printf("%d %d\n", v.first, v.second);
+}
+
+int main(){
+    print_v(pair{1,2});
+    //1,2 출력
+}
+```
+
