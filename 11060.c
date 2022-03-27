@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+//11060 점프 점프
+//전형적인 BFS 문제
+//queue를 직접 구현하여 진행
+//해당 코드를 통해 queue 숙지 필요
+
 typedef struct pair {
 	int first;
 	int second;
