@@ -503,45 +503,45 @@ int main(){
 #include <string.h>
 
 typedef struct pair {
-	int first;
-	int second;
+	int value;
 }pair;
 
 typedef struct Node {
-	pair data;
-	Node* next;
+	pair p;
+    //C의 경우는 다음과 같이 struct를 써줘야 함을 기억하기.
+	struct Node* next;
 }Node;
 
 typedef struct Queue {
-	Node* front;
-	Node* rear;
+	struct Node* head;
+	struct Node* tail;
+	int size;
 }Queue;
 
-int N;
-int* value;
-int* visited;
-
 void init(Queue* q) {
-	q->front = q->rear = NULL;
+	q->head = q->tail = NULL;
+	q->size = 0;
 	return;
 }
 
 int empty(Queue* q) {
-	if(q->front == NULL || q->rear == NULL) return 1;
+	if (q->head == NULL || q->tail == NULL) return 1;
 	return 0;
 }
 
-void emplace(Queue* q, pair data) {
+void push_back(Queue* q, pair data) {
 	Node* node = (Node*)malloc(sizeof(Node));
+
 	if (empty(q)) {
-		q->front = node;
+		q->head = node;
 	}
 	else {
-		q->rear->next = node;
+		q->tail->next = node;
 	}
-	q->rear = node;
-	q->rear->data = data;
-	q->rear->next = NULL;
+	node->p = data;
+	q->tail = node;
+	q->tail->next = NULL;
+	q->size++;
 	return;
 }
 
@@ -550,56 +550,75 @@ pair pop(Queue* q) {
 	pair data;
 
 	if (empty(q)) {
-		return pair{ -1,-1 };
+		data.value = -1;
+		return data;
 	}
-	node = q->front;
-	data = node->data;
-	q->front = node->next;
+	node = q->head;
+	data = node->p;
+	q->head = node->next;
 	free(node);
 	node = NULL;
-
+	if (q->head == NULL) q->tail = NULL;
+	q->size--;
 	return data;
 }
 
-int calculate() {
-
-	Queue* q = (Queue*)malloc(sizeof(Queue));
-	init(q);
-	visited[0] = 1;
-	emplace(q, pair{ 0,0 });
-
-	while (!empty(q)) {
-		int front = q->front->data.first;
-		int ans = q->front->data.second;
-		(void)pop(q);
-
-		if (front == N - 1) return ans;
-
-		for (int k = 1; k <= value[front]; k++) {
-			int nx = front + k;
-
-			if (nx < N) {
-				if (!visited[nx]) {
-					visited[nx] = 1;
-					emplace(q, pair{nx, ans + 1});
-				}
-			}
-		}
-	}
-
-	return -1;
+pair front(Queue* q) {
+	pair pa = { -1 };
+	return (q->head != NULL) ? q->head->p : pa;
 }
 
+pair back(Queue* q) {
+	pair pa = { -1 };
+	return (q->tail != NULL) ? q->tail->p : pa;
+}
 
+int size(Queue* q) {
+	return q->size;
+}
+
+int N;
+char cmd[100];
+Queue* q;
+
+void calculate() {
+
+	if (!strcmp(cmd, "push")) {
+		pair pa;
+		scanf("%d", &pa.value);
+		push_back(q, pa);
+	}
+	else if(!strcmp(cmd, "pop")){
+		printf("%d\n", pop(q).value);
+	}
+	else if (!strcmp(cmd, "size")) {
+		printf("%d\n", size(q));
+	}
+	else if (!strcmp(cmd, "empty")) {
+		printf("%d\n", empty(q));
+	}
+	else if (!strcmp(cmd, "front")) {
+		printf("%d\n", front(q).value);
+	}
+	else if (!strcmp(cmd, "back")) {
+		printf("%d\n", back(q).value);
+	}
+
+	return;
+}
 
 int main() {
 	scanf("%d", &N);
-	value = (int*)malloc(sizeof(int) * N);
-	visited = (int*)calloc(N, sizeof(int));
+	q = (Queue*)malloc(sizeof(Queue));
+	init(q);
+
 	for (int k = 0; k < N; k++) {
-		scanf("%d", &value[k]);
+		memset(cmd, 0, sizeof(char)*100);
+		scanf("%s", cmd);
+		calculate();
 	}
-	printf("%d", calculate());
+	free(q);
+	q = NULL;
 }
 ```
 
