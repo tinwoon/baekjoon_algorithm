@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                             
+>    	                                                
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                 
+>                                                    
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2411,7 +2411,7 @@ void print_prefix(long long b, long long c) {
   void get_pi(int size) {
   	for (int i = 1; i < size; i++) {
   		while (j > 0 && c_s[i] != c_s[j]) {
-              //왜 pi[j-1]이냐면 위에 abcabcabc 처럼 이제까지 접두사 안에서도 접두사와 접미사로 나뉘어져 둘이 같을 수가 있다.
+              //왜 pi[j-1]이냐면 위에 abcabcabd 처럼 이제까지 접두사 안에서도 접두사와 접미사로 나뉘어져 둘이 같을 수가 있다.
               //따라서 구한 접두사의 접미사까지가 일치 하지 않아 구한 접두사의 접두사로 접근하기 위해 pi[j-1]을 대입한다.
               //워낙 어려울 수 있지만 곰곰히 생각해보면 어느 순간 알 수 있다.
               //이것만 이해하는데 3일 걸렸다. 편안하게 생각해보기
