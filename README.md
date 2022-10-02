@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                                
+>    	                                                   
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                    
+>                                                       
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2358,15 +2358,15 @@ void print_prefix(long long b, long long c) {
 
 > - 보통의 `A[i][j]`의 의미는 i에서 j를 거쳐서 가는 도로의 개수를 의미한다. (아래 그림과 같다)
 >
-> ![image-20211128164714188](C:\Users\Hello\AppData\Roaming\Typora\typora-user-images\image-20211128164714188.png)
+> ![image](https://user-images.githubusercontent.com/18729679/193445006-3b800b2f-d313-494f-988f-01a8e0f36ac2.png)
 >
 > - 이를 조금 더 간단하게 다음과 같이 간략히 나타내자
 >
->   ![image-20211128164822817](C:\Users\Hello\AppData\Roaming\Typora\typora-user-images\image-20211128164822817.png)
+>   ![image](https://user-images.githubusercontent.com/18729679/193445027-8ef319ac-bff3-45c9-a754-280e537ee8ff.png)
 >
 > - 여기서 행렬을 제곱하면 다음과 같은 식으로 귀결된다는 것을 알 수 있다.
 >
->   ![image-20211128164919890](C:\Users\Hello\AppData\Roaming\Typora\typora-user-images\image-20211128164919890.png)
+>   ![image](https://user-images.githubusercontent.com/18729679/193445036-7c8c34c0-a95b-4fe6-8218-fa8657db9369.png)
 >
 > - 즉, 1행 1열을 예로 들면 (AA) = (AA)(AA) + (AB)(BA) + (AC)(CA) 이다. 해당 의미는 A에서 A를 거쳐 A로 도착하는 경우 + A에서 B를 거쳐 A로 도착하는 경우 + A에서 C를 거쳐 A에 도착하는 경우의 수를 의미한다.
 >
