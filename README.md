@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                                   
+>    	                                                      
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                       
+>                                                          
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2422,4 +2422,36 @@ void print_prefix(long long b, long long c) {
   }
   ```
 
+
+
+
+#### 138. dfs의 사이클
+
+- 유니온 파인드를 활용한 싸이클의 경우, 간선의 방향이 주어지지 않는 무향 그래프일 경우에만 사이클 여부를 판단할 수 있음.
+
+  이 경우에는 하기와 같이 visited 배열 외에 return 직전 finished를 통해 해당 노드를 방문했던 모든 정점들이 방문을 종료했는지 확인하여 싸이클 여부를 판단할 수 있다.
+
+  ```c++
+  //dfs를 통한 방문
+  void calculate(int node) {
+      
+      //dfs와 동일하게 방문처리
+  	visited[node] = true;
   
+  	for (int k = 0; k < N; k++) {
+          //방문하지 않는 노드 중 연결된 노드에 대하여 dfs 탐색 진행(node와 k가 연결되어 있을 경우)
+  		if (connect[node][k] && !visited[k]) calculate(k);
+          //그렇지 않을 경우 k번 노드가 종료되었는지 확인함.(k 노드가 종료되지 않았는데 다시 방문했다는 건 		 // 싸이클을 형성했다는 의미)
+  		else if (connect[node][k] && !finished[k]) ans = true;
+  	}
+  	//node가 끝나면 하기와 같이 해당 노드 이후 방문되는 모든 정점까지 끝났다는 의미의 배열 finished에       //flag를 true로 변경함
+  	finished[node] = true;
+  }
+  ```
+
+
+
+#### 139. 그래프 탐색 중 방향이 변경가능하다는 의미
+
+- 이 경우 간선이 연결되어 있지 않다는 의미(간선 없음)로 봐도 무관하다(Cycle이 형성될 가능성이 없음.)
+- 백준 일방통행(1412) 문제
