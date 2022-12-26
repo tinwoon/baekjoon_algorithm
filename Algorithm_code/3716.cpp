@@ -6,11 +6,6 @@
 #include <algorithm>
 #include <limits.h>
 
-//3176 도로네트워크 문제
-//기존의 Sparse Table을 활용하여 문제를 풀이하는 방식은 같으나,
-//하기의 내용처럼 length 값을 매번 비교해줘야하는 로직을 추가해야한다.
-//그 외에는 LCA와 다른 바가 없음.
-
 std::vector< std::pair<int, int> > ans;
 
 int N, M, lg;
