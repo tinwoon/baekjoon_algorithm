@@ -1,12 +1,12 @@
 #pragma warning (disable : 4996)
 #include <iostream>
 #include <vector>
+#include <cstring>
 #define DIV 1000000009
 
 int T, N, M;
 
-//dp[사용한 수][값] = 개수
-std::vector< std::vector<int> > dp;
+int dp[1001][1001];
 
 int calculate(int m, int n) {
 	if (m < 1 || n < 1) return 0;
@@ -18,7 +18,7 @@ int calculate(int m, int n) {
 
 int main() {
 	scanf("%d", &T);
-	dp.assign(1001, std::vector<int>(1001, -1));
+	memset(dp, -1, sizeof(dp));
 	dp[1][1] = dp[1][2] = dp[1][3] = 1;
 
 	while (T--)
