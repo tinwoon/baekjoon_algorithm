@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                                         
+>    	                                                            
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                             
+>                                                                
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2465,3 +2465,40 @@ void print_prefix(long long b, long long c) {
 - Ex) 1 -> 2, 1-> 3으로 구성되어있고, Root가 1이라 가정하면
 
   > 3을 Root 노드로 만들고 3 -> 1-> 2의 그래프를 만들 수도 있으며, 2를 Root로 만들고 2 -> 1 -> 3으로 만들 수도 있다.
+
+
+
+#### 141. 배열을 쓰지 않고 회전하는 알고리즘
+
+- 단순히 행렬 전치 이후에 reverse만하면 회전이 가능하다.
+
+  ```c
+  void rotate(vector<vector<int>> &mat)
+  {
+      // `N × N` 매트릭스
+      int N = mat.size();
+   
+      // 기본 케이스
+      if (N == 0) {
+          return;
+      }
+   
+      // 매트릭스 전치
+      for (int i = 0; i < N; i++)
+      {
+          for (int j = 0; j < i; j++) {
+              swap(mat[i][j], mat[j][i]);
+          }
+      }
+   
+      // 열 교환
+      for (int i = 0; i < N; i++)
+      {
+          for (int j = 0; j < N/2; j++) {
+              swap(mat[i][j], mat[i][N - j - 1]);
+          }
+      }
+  }
+  ```
+
+  
