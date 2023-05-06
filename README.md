@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                                            
+>    	                                                               
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                                
+>                                                                   
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2501,4 +2501,29 @@ void print_prefix(long long b, long long c) {
   }
   ```
 
+
+#### 142. 최대 부분합 알고리즘
+
+- https://leetcode.com/problems/maximum-subarray/
+
+- 전체 배열에서 최대 부분합을 구하는 문제
+
+- 카데인 알고리즘 O(N), 분할정복 알고리즘 O(NlogN)으로 카데인 알고리즘을 사용하는 것이 간편하고 효율적임.
+
+  > 카데인 알고리즘의 경우 각각의 최대 부분합은 이전 최대 부분합이 반영된 결과 값임을 이용
+  >
+  > ![image](https://user-images.githubusercontent.com/18729679/236624612-fa0ed1f4-2a12-4ed3-a430-d8a93c0847f2.png)
+
+  ```c
+  //카데인 알고리즘
+  int calculate(vector<int> &nums){
+      int res = INT_MIN;
+      for(int i=1; i<nums.size(); i++){
+          res = max(res, m[i] = max(m[i - 1] + array[i], array[i]));
+      }
+      return res;
+  }
+  ```
+
   
+
