@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                                               
+>    	                                                                  
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                                   
+>                                                                      
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2525,5 +2525,51 @@ void print_prefix(long long b, long long c) {
   }
   ```
 
-  
 
+
+
+#### 143. 완전 순열 알고리즘
+
+- 완전순열 또는 교란순열[[1\]](https://namu.wiki/w/완전순열#fn-1)은 사람들이 각각 자신의 모자를 벗었다가 아무 모자나 다시 쓰는데, 모든 사람이 자기 것이 아닌 모자를 쓰는 순열이라 할 수 있고, 이는 곧 [치환](https://namu.wiki/w/치환#s-2.2)에서 부동점[[2\]](https://namu.wiki/w/완전순열#fn-2)이 없는 경우를 가리킨다.[[3\]](https://namu.wiki/w/완전순열#fn-3) 그리고 모든 완전 순열의 수를 **준계승** 또는 **교란수**라고 하며, 이 개념을 처음 제시한 프랑스의 수학자 피에르 레몽 드몽모르(Pierre Raymond de Montmort)의 이름을 따 **드몽모르 수**라고도 한다.
+
+- 완전 순열의 경우 점화식이 별개로 존재하며, 백준 1947 선물 전달문제 참조 가능함.
+
+  > 1. N번 인원이 새로 유입 시, 1부터 N - 1 중에서 특정 인원만 같은 모자를 그대로 소유한 상태(Ex. 1번 사람이 1번 모자를 그대로 소유한 상태)에서 N번과 맞바꾸는 경우 
+  >
+  >    => (N - 1) * dp[N-2] ( N-1의 인원 중 N-2까지의 인원은 모두 다른 선물을 가지고 있는 상태에서 N - 1번 인원은 N - 1의 선물, 즉 자기 소유의 물건을 그대로 가지고 있는 경우이며, 이 경우 새로 유입되는 N번 인원과 선물을 바꾸면 된다.)
+  >
+  > 2. N번 인원이 새로 유입 시, 1부터 N - 1번 인원 모두가 별개로 소유 중인 경우
+  >
+  >    => (N - 1) * dp[N-1] (이 경우는 어떤 인원과 모자를 바꾸어도 상관이 없다.)
+  >
+  >    
+  >
+  >    즉, dp[N] = (N-1) * (dp[N-1] + dp[N-2])
+
+- 코드는 아래와 같음.
+
+  ```c
+  #pragma warning (disable : 4996)
+  #include <iostream>
+  #include <vector>
+  
+  //MOD는 백준 1947 문제의 나머지 연산 제약 조건임으로
+  //점화식과는 무관하다.
+  #define MOD 1000000000
+  
+  int N;
+  std::vector<int> dp;
+  
+  int main() {
+  	scanf("%d", &N);
+  	dp.assign(N + 1, 0);
+  	dp[2] = 1;
+  	for (int k = 3; k <= N; k++) {
+  		long long val = (((long long)(k - 1) * (long long)(dp[k - 1] + dp[k - 2])) % MOD);
+  		dp[k] = val;
+  	}
+  	printf("%d", dp[N]);
+  }
+  ```
+
+  
