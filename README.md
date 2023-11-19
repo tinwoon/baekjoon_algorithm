@@ -2469,6 +2469,7 @@ void print_prefix(long long b, long long c) {
 
 
 #### 141. 배열을 쓰지 않고 회전하는 알고리즘
+> https://www.techiedelight.com/ko/place-rotate-matrix-90-degrees-clock-wise-direction/
 
 - 단순히 행렬 전치 이후에 reverse만하면 회전이 가능하다.
 
