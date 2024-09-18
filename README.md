@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                                                           
+>    	                                                                              
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                                               
+>                                                                                  
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2595,3 +2595,81 @@ void print_prefix(long long b, long long c) {
   > **(다시 돌려줌)**
 
   이와 같은 속성은 두 정점이 서로 상대에게 유량을 보내 주는 것은 의미가 없기 때문에 성립한다.
+  
+  ``````c++
+  //백준 17412 도시 왕복하기 1
+  
+  #pragma warning (disable : 4996)
+  #include <iostream>
+  #include <vector>
+  #include <queue>
+  #include <limits.h>
+  #include <algorithm>
+  
+  int N, P;
+  std::vector< std::vector<int> > connected;
+  std::vector< std::vector<int> > flow;
+  std::vector< std::vector<int> > capacity;
+  std::vector<int> from;
+  
+  int calculate(int start, int end) {
+  	int ret = 0;
+  
+  	while (1) {
+  		std::queue<int> q;
+  		from.assign(N + 1, -1);
+  		q.emplace(start);
+  		
+  		while (!q.empty()) {
+  			auto front = q.front();
+  			q.pop();
+  
+  			for (int k = 0; k < connected[front].size(); k++) {
+  				int n_node = connected[front][k];
+  				if (capacity[front][n_node] - flow[front][n_node] > 0 && from[n_node] == -1) {
+  					q.emplace(n_node);
+  					from[n_node] = front;
+  					if (n_node == end) break;
+  				}
+  			}
+  		}
+  
+  		if (from[end] == -1) break;
+  
+  		int flw = INT_MAX;
+  		for (int node = end; node != start; node = from[node]) {
+  			flw = std::min(flw, capacity[from[node]][node] - flow[from[node]][node]);
+  		}
+  		for (int node = end; node != start; node = from[node]) {
+  			flow[from[node]][node] += flw;
+  			flow[node][from[node]] -= flw;
+  		}
+  
+  		ret += flw;
+  	}
+  
+  	return ret;
+  }
+  
+  int main() {
+  	scanf("%d %d", &N, &P);
+  	connected.assign(N + 1, std::vector<int>());
+  	flow.assign(N + 1, std::vector<int>(N + 1, 0));
+  	capacity.assign(N + 1, std::vector<int>(N + 1, 0));
+  	from.assign(N + 1, -1);
+  
+  
+  	for (int k = 0; k < P; k++) {
+  		int a, b;
+  		scanf("%d %d", &a, &b);
+  		connected[a].emplace_back(b);
+  		//capacity는 해주지 않더라도, 역방향 간선은 추가해줘야한다.
+  		connected[b].emplace_back(a);
+  		capacity[a][b] = 1;
+  	}
+  
+  	printf("%d", calculate(1, 2));
+  }
+  ``````
+  
+  
