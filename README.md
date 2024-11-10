@@ -1568,7 +1568,7 @@ int main()
 >    	double ans = 0;
 >    	//만들 수 있는 총 개수
 >    	double count = 1;
->    	                                                                              
+>    	                                                                                    
 >    	//digit에는 각 자리수 별로 가능한 값이 있다.
 >    	//예를 들면 N이 3일때 digit[1]에는 100이 digit[2]에는 10이 digit[3]에는 1의 자리 숫자에 나올 수 있는 값이 		들어있다. => digit[1] = {1,2,3}, digit[2] = {1,2}, digit[3] = {1}
 >        for (int i = 1; i <= N; i++) {
@@ -1578,7 +1578,7 @@ int main()
 >        for (int i = 1; i <= N; i++) {
 >            ans += std::accumulate(digit[i].begin(), digit[i].end(), 0) * pow(10, N - i) * (count / 			(double)digit[i].size());
 >        }
->                                                                                  
+>                                                                                        
 >    //이를 모두 수행하면 ans에는 111 + 121 + 211 + 221 + 311 + 321이 들어가 있다.
 >    ```
 >
@@ -2673,3 +2673,19 @@ void print_prefix(long long b, long long c) {
   ``````
   
   
+
+#### 145.네트워크 플로우의 음의 간선의 증명
+
+- 희소 배열(Sparse Table)은 그래프 상에서 N번째 앞에 있는 정점을 빠르게 찾을 수 있는 자료 구조 기법이다.
+
+  ![image](https://github.com/user-attachments/assets/f40a5338-2c43-452d-87ec-c214ba5288d3)
+
+  > https://readytojoin.tistory.com/entry/Sparse-Table-%ED%9D%AC%EC%86%8C-%EB%B0%B0%EC%97%B4
+
+  다음과 같은 유향 그래프가 있다고 가정해보자. 모든 정점은 나가는 방향의 화살표를 1개 가지고 있다. 이 모든 정점에서 1번 이동했을 때의 정점은 각각 어디일까?
+
+  ![image](https://github.com/user-attachments/assets/db314e79-348e-4352-b60d-80a394a88ad7)
+
+  #### 146. Moduler 연산의 경우, MOD하기 전에 (VAL + MOD) % MOD로 대입해야한다.
+  
+  > val 값이 음수인 경우, MOD 연산이 예상 값과 달리 대입될 가능성이 있기 때문
